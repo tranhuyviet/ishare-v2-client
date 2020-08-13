@@ -1,99 +1,55 @@
 import React from 'react';
-import { useStyles } from './Banner.style';
+import { useStyles, useTheme } from './Banner.style';
+import { Grid, Avatar, Typography, Paper } from '@material-ui/core';
+import MyButton from '../shared/MyButton';
+
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import CommentIcon from '@material-ui/icons/Comment';
 
 const Banner = () => {
     const classes = useStyles();
+
     return (
-        <div className={classes.banner}>
-            {/* {userData && (
-                <div className={classes.container}>
-                    <div className={classes.imageContainer}>
-                        <Avatar
-                            src={'https://env-2591407.jelastic.metropolia.fi/' + userData.avatarUrl}
-                            alt={userData.name}
-                            className={classes.avatar}
-                        />
-                    </div>
-                    <div className={classes.infoContainer}>
-                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
-                            <h1
-                                style={{
-                                    margin: 0,
-                                    marginRight: 20,
-                                    fontSize: '24px',
-                                    letterSpacing: '2px',
-                                }}
-                            >
-                                {userData.name}
-                            </h1>
-                            <button
-                                className={classes.button}
-                                onClick={() => {
-                                    setIsEditProfileOpen(true);
-                                    setIsListSelected(0);
-                                }}
-                            >
-                                Profile
-                            </button>
-                        </div>
-                        <div className={classes.info}>
-                            <div
-                                className={classes.infoItem}
-                                // onClick={() => {
-                                //     setIsEditProfileOpen(true);
-                                //     setIsListSelected(2);
-                                // }}
-                            >
-                                <AddAPhotoIcon />
-                                <p className={classes.infoText}>
-                                    <span className={classes.infoNumber}>
-                                        {userData.numberOfPosts}
-                                    </span>{' '}
-                                    posts
-                                </p>
-                            </div>
-                            <div
-                                className={classes.infoItem}
-                                // onClick={() => {
-                                //     setIsEditProfileOpen(true);
-                                //     setIsListSelected(3);
-                                // }}
-                            >
-                                <CommentIcon />
-                                <p className={classes.infoText}>
-                                    <span className={classes.infoNumber}>
-                                        {userData.numberOfComments}
-                                    </span>{' '}
-                                    comments
-                                </p>
-                            </div>
-                            <div
-                                className={classes.infoItem}
-                                // onClick={() => {
-                                //     setIsEditProfileOpen(true);
-                                //     setIsListSelected(4);
-                                // }}
-                            >
-                                <FavoriteIcon />
-                                <p className={classes.infoText}>
-                                    <span className={classes.infoNumber}>
-                                        {userData.numberOfLikes}
-                                    </span>{' '}
-                                    likes
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <EditProfile
-                        isEditProfileOpen={isEditProfileOpen}
-                        handleEditProfileClose={handleEditProfileClose}
-                        isListSelected={isListSelected}
-                        setIsListSelected={setIsListSelected}
-                        userData={userData}
+        <Paper className={classes.banner} elevation={0} square>
+            <Grid container className={classes.container} spacing={4}>
+                <Grid item xs={4} container justify="flex-end" alignItems="center">
+                    <Avatar
+                        src="https://res.cloudinary.com/dzaxf70c4/image/upload/v1592381151/jqoyecsjkjtxxshaxhqt.jpg"
+                        alt="user avatar"
+                        className={classes.avatar}
                     />
-                </div>
-            )} */}
-        </div>
+                </Grid>
+                <Grid item xs={8} container direction="column" justify="center" spacing={4}>
+                    <Grid item container alignItems="center">
+                        <Typography variant="h5" className={classes.name}>
+                            Viet Tran
+                        </Typography>
+                        <MyButton title="Profile" />
+                    </Grid>
+                    <Grid item container alignItems="center">
+                        <Grid item className={classes.infoContainer}>
+                            <div className={classes.infoGroup}>
+                                <AddAPhotoIcon className={classes.icon} />
+                                <Typography variant="subtitle1">132 posts</Typography>
+                            </div>
+                        </Grid>
+                        <Grid item className={classes.infoContainer}>
+                            <div className={classes.infoGroup}>
+                                <CommentIcon className={classes.icon} />
+                                <Typography variant="subtitle1">145 comments</Typography>
+                            </div>
+                        </Grid>
+                        <Grid item className={classes.infoContainer}>
+                            <div className={classes.infoGroup}>
+                                <FavoriteIcon className={classes.icon} />
+                                <Typography variant="subtitle1">99 likes</Typography>
+                            </div>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Paper>
     );
 };
 
