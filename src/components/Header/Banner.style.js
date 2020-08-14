@@ -6,6 +6,7 @@ export const useStyles = makeStyles((theme) => ({
     },
     container: {
         ...theme.share.container,
+        borderBottom: `1px solid ${theme.palette.grey['400']}`,
     },
     avatar: {
         width: theme.spacing(18),
@@ -31,7 +32,10 @@ export const useStyles = makeStyles((theme) => ({
         },
     },
     icon: {
-        // marginRight: theme.spacing(1),
         fontSize: '28px',
+        marginBottom: 5,
+    },
+    number: {
+        fontWeight: 'bold',
     },
 }));

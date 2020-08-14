@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStyles, useTheme } from './Banner.style';
-import { Grid, Avatar, Typography, Paper } from '@material-ui/core';
+import { Grid, Avatar, Typography, Paper, Card, CardActionArea } from '@material-ui/core';
 import MyButton from '../shared/MyButton';
 
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
@@ -29,22 +29,28 @@ const Banner = () => {
                     </Grid>
                     <Grid item container alignItems="center">
                         <Grid item className={classes.infoContainer}>
-                            <div className={classes.infoGroup}>
+                            <CardActionArea className={classes.infoGroup}>
                                 <AddAPhotoIcon className={classes.icon} />
-                                <Typography variant="subtitle1">132 posts</Typography>
-                            </div>
+                                <Typography variant="subtitle1">
+                                    <span className={classes.number}>132</span> posts
+                                </Typography>
+                            </CardActionArea>
                         </Grid>
                         <Grid item className={classes.infoContainer}>
-                            <div className={classes.infoGroup}>
+                            <CardActionArea className={classes.infoGroup}>
                                 <CommentIcon className={classes.icon} />
-                                <Typography variant="subtitle1">145 comments</Typography>
-                            </div>
+                                <Typography variant="subtitle1">
+                                    <span className={classes.number}>145</span> comments
+                                </Typography>
+                            </CardActionArea>
                         </Grid>
                         <Grid item className={classes.infoContainer}>
-                            <div className={classes.infoGroup}>
+                            <CardActionArea className={classes.infoGroup}>
                                 <FavoriteIcon className={classes.icon} />
-                                <Typography variant="subtitle1">99 likes</Typography>
-                            </div>
+                                <Typography variant="subtitle1">
+                                    <span className={classes.number}>99</span> likes
+                                </Typography>
+                            </CardActionArea>
                         </Grid>
                     </Grid>
                 </Grid>
