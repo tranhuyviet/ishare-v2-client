@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { TextField, Button, CircularProgress } from '@material-ui/core';
+import { TextField, CircularProgress } from '@material-ui/core';
 import { useStyles } from './SignupForm.style';
 
 import { useFormik } from 'formik';
@@ -36,9 +36,9 @@ const SignupForm = ({ handleAuthPageClose }) => {
         handleBlur,
         errors,
         setErrors,
-        //isValid,
-        setValues,
-        touched,
+        // isValid,
+        // setValues,
+        // touched,
         setFieldValue,
     } = useFormik({
         initialValues,

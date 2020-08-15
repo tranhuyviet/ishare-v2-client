@@ -4,11 +4,9 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
-    DialogActions,
     Typography,
     IconButton,
     Grid,
-    Divider,
 } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
@@ -19,7 +17,7 @@ import SignupForm from '../forms/SignupForm';
 
 const AuthenticationPage = ({ authPageOpen, handleAuthPageClose }) => {
     const classes = useStyles();
-    const [isLogin, setIsLogin] = useState(false);
+    const [isLogin, setIsLogin] = useState(true);
 
     const handleToggleLogin = () => {
         setIsLogin((isLogin) => !isLogin);
@@ -45,7 +43,7 @@ const AuthenticationPage = ({ authPageOpen, handleAuthPageClose }) => {
                 >
                     <PersonIcon className={classes.personIcon} />
                     {isLogin ? (
-                        <LoginForm />
+                        <LoginForm handleAuthPageClose={handleAuthPageClose} />
                     ) : (
                         <SignupForm handleAuthPageClose={handleAuthPageClose} />
                     )}

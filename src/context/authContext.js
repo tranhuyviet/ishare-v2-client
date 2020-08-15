@@ -1,8 +1,21 @@
 import React, { useReducer, createContext } from 'react';
+import jwtDecode from 'jwt-decode';
 
 const initialState = {
     user: null,
 };
+
+if (localStorage.ishare2Token) {
+    const decodedToken = jwtDecode(localStorage.ishare2Token);
+    // console.log('Decode Token:', decodedToken);
+
+    if (decodedToken.exp * 1000 < Date.now()) {
+        localStorage.removeItem('ishare2Token');
+    } else {
+        initialState.user = decodedToken;
+        initialState.user.token = localStorage.ishare2Token;
+    }
+}
 
 const AuthContext = createContext({
     user: null,

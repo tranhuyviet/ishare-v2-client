@@ -6,6 +6,7 @@ export const useStyles = makeStyles((theme) => ({
             marginBottom: theme.spacing(3),
         },
         maxWidth: 303,
+        textAlign: 'center',
     },
     oauthContainer: {
         textAlign: 'center',
@@ -15,7 +16,6 @@ export const useStyles = makeStyles((theme) => ({
     facebookButton: {
         textTransform: 'capitalize',
         height: 45,
-        fontSize: '14px',
         background: '#3c5b98',
         padding: '0 16px',
         marginRight: theme.spacing(2),

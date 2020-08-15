@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useStyles } from './LoginForm.style';
 import { useFormik } from 'formik';
-import { TextField, Button, CircularProgress, Typography, Divider } from '@material-ui/core';
+import { TextField, CircularProgress, Typography, Divider, Snackbar } from '@material-ui/core';
 
 import gql from 'graphql-tag';
 import { loginSchema } from '../../schemas';
@@ -9,7 +9,6 @@ import { useMutation } from '@apollo/react-hooks';
 
 import errorParse from '../../utils/errorParse';
 import { AuthContext } from '../../context/authContext';
-import { useHistory } from 'react-router-dom';
 
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
@@ -18,10 +17,12 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import ReCAPTCHA from 'react-google-recaptcha';
 import MyButton from '../shared/MyButton';
 
-const LoginForm = (props) => {
+import Alert from '../shared/Alert';
+
+const LoginForm = ({ handleAuthPageClose }) => {
     const classes = useStyles();
     const authContext = useContext(AuthContext);
-    const history = useHistory();
+    const [alertOpen, setAlertOpen] = useState(true);
 
     const initialValues = {
         email: '',
@@ -48,11 +49,12 @@ const LoginForm = (props) => {
         onError(error) {
             console.log('LOGIN CLIENT ERROR', error.graphQLErrors[0]);
             setErrors(errorParse(error));
+            setAlertOpen(true);
         },
         update(proxy, result) {
             console.log('RESULT', result);
             authContext.login(result.data.login);
-            history.push('/');
+            handleAuthPageClose();
         },
     });
 
@@ -61,12 +63,13 @@ const LoginForm = (props) => {
         onError(error) {
             console.log('LOGIN FACEBOOK ERROR', error.graphQLErrors[0]);
             setErrors(errorParse(error));
+            setAlertOpen(true);
         },
         update(proxy, result) {
             console.log(values);
-            console.log('RESULT', result);
+            console.log('RESULT LOGIN FACEBOOK', result);
             authContext.login(result.data.loginFacebook);
-            history.push('/');
+            handleAuthPageClose();
         },
     });
 
@@ -75,25 +78,28 @@ const LoginForm = (props) => {
         onError(error) {
             console.log('LOGIN GOOGLE ERROR', error.graphQLErrors[0]);
             setErrors(errorParse(error));
+            setAlertOpen(true);
         },
         update(proxy, result) {
-            console.log(values);
+            // console.log(values);
             console.log('RESULT', result);
             authContext.login(result.data.loginGoogle);
-            history.push('/');
+            handleAuthPageClose();
         },
     });
 
     function onSubmit(values) {
-        console.log('submit...', values);
+        // console.log('submit...', values);
         login();
+        window.grecaptcha.reset();
     }
 
     // FACEBOOK
     const responseFacebook = (response) => {
         console.log(response);
-        delete values.email;
-        delete values.password;
+        // delete values.email;
+        // delete values.password;
+        // delete values.recaptcha;
         values.facebookId = response.id;
         values.accessToken = response.accessToken;
         console.log(values);
@@ -108,8 +114,8 @@ const LoginForm = (props) => {
     const responseGoogle = (response) => {
         console.log('GOOGLE', response);
         console.log(response);
-        delete values.email;
-        delete values.password;
+        // delete values.email;
+        // delete values.password;
         values.googleId = response.googleId;
         values.idToken = response.tokenObj.id_token;
         console.log(values);
@@ -118,13 +124,26 @@ const LoginForm = (props) => {
 
     return (
         <div>
+            {errors.global && (
+                <Snackbar
+                    open={alertOpen}
+                    autoHideDuration={6000}
+                    onClose={() => setAlertOpen(false)}
+                >
+                    <Alert onClose={() => setAlertOpen(false)} severity="error">
+                        {errors.global}
+                    </Alert>
+                </Snackbar>
+            )}
             <form noValidate onSubmit={handleSubmit} className={classes.root}>
-                {loading && <CircularProgress />}
+                {(loading || loadingLoginFacebook || loadingLoginGoogle) && (
+                    <CircularProgress style={{ marginBottom: '16px' }} />
+                )}
 
                 <TextField
                     type="email"
                     name="email"
-                    error={errors.email || errors.global ? true : false}
+                    error={errors.email}
                     label="Email"
                     placeholder="example@example.com"
                     variant="outlined"
@@ -139,7 +158,7 @@ const LoginForm = (props) => {
                 <TextField
                     type="password"
                     name="password"
-                    error={errors.password || errors.global ? true : false}
+                    error={errors.password}
                     label="Password"
                     variant="outlined"
                     size="small"
@@ -147,7 +166,7 @@ const LoginForm = (props) => {
                     value={values.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    helperText={errors.password || errors.global}
+                    helperText={errors.password}
                 />
                 <ReCAPTCHA
                     sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
@@ -166,8 +185,7 @@ const LoginForm = (props) => {
                     </p>
                 )}
                 <MyButton type="submit" title="Login" style={{ margin: '24px 0' }} fullWidth>
-                    {loading && <CircularProgress />}
-                    {!loading && 'Login'}
+                    Login
                 </MyButton>
                 <Divider />
                 <div className={classes.oauthContainer}>
@@ -200,8 +218,8 @@ const LoginForm = (props) => {
 };
 
 const LOGIN = gql`
-    mutation login($email: String!, $password: String!) {
-        login(email: $email, password: $password) {
+    mutation login($email: String!, $password: String!, $recaptcha: String!) {
+        login(email: $email, password: $password, recaptcha: $recaptcha) {
             name
             email
             avatarId

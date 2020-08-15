@@ -13,8 +13,8 @@ import AuthenticationPage from '../pages/AuthenticationPage';
 
 const NavBar = () => {
     const classes = useStyles();
-    const [authPageOpen, setAuthPageOpen] = useState(true);
-    const { user, login, logout } = useContext(AuthContext);
+    const [authPageOpen, setAuthPageOpen] = useState(false);
+    const { user, logout } = useContext(AuthContext);
 
     const handleAuthPageClose = () => {
         setAuthPageOpen(false);
