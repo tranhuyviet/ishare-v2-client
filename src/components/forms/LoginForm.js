@@ -84,7 +84,7 @@ const LoginForm = (props) => {
         },
     });
 
-    async function onSubmit(values) {
+    function onSubmit(values) {
         console.log('submit...', values);
         login();
     }
@@ -173,30 +173,25 @@ const LoginForm = (props) => {
                 <div className={classes.oauthContainer}>
                     <Typography variant="subtitle1">Or login with</Typography>
                     <div style={{ marginTop: 14 }}>
-                        <Button
-                            startIcon={<FacebookIcon style={{ fontSize: '28px' }} />}
-                            className={classes.facebookButtonContainer}
-                        >
-                            <FacebookLogin
-                                appId={process.env.REACT_APP_FACEBOOK_APPID}
-                                // autoLoad={true}
-                                fields="name,email,picture"
-                                onClick={clickedFacebook}
-                                callback={responseFacebook}
-                                cssClass={classes.facebookButton}
-                                textButton="Facebook"
-                            />
-                        </Button>
-                        <Button className={classes.googleButtonContainer}>
-                            <GoogleLogin
-                                clientId={process.env.REACT_APP_GOOGLE_CLIENTID}
-                                buttonText="Google"
-                                onSuccess={responseGoogle}
-                                onFailure={responseGoogle}
-                                cookiePolicy={'single_host_origin'}
-                                className={classes.googleButton}
-                            />
-                        </Button>
+                        <FacebookLogin
+                            appId={process.env.REACT_APP_FACEBOOK_APPID}
+                            // autoLoad={true}
+                            fields="name,email,picture"
+                            onClick={clickedFacebook}
+                            callback={responseFacebook}
+                            cssClass={classes.facebookButton}
+                            textButton="Facebook"
+                            icon={<FacebookIcon style={{ marginRight: 20 }} />}
+                        />
+
+                        <GoogleLogin
+                            clientId={process.env.REACT_APP_GOOGLE_CLIENTID}
+                            buttonText="Google"
+                            onSuccess={responseGoogle}
+                            onFailure={responseGoogle}
+                            cookiePolicy={'single_host_origin'}
+                            className={classes.googleButton}
+                        />
                     </div>
                 </div>
             </form>

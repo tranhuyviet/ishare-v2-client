@@ -15,10 +15,11 @@ import CloseIcon from '@material-ui/icons/Close';
 import PersonIcon from '@material-ui/icons/Person';
 
 import LoginForm from '../forms/LoginForm';
+import SignupForm from '../forms/SignupForm';
 
 const AuthenticationPage = ({ authPageOpen, handleAuthPageClose }) => {
     const classes = useStyles();
-    const [isLogin, setIsLogin] = useState(true);
+    const [isLogin, setIsLogin] = useState(false);
 
     const handleToggleLogin = () => {
         setIsLogin((isLogin) => !isLogin);
@@ -43,7 +44,11 @@ const AuthenticationPage = ({ authPageOpen, handleAuthPageClose }) => {
                     className={classes.formContainer}
                 >
                     <PersonIcon className={classes.personIcon} />
-                    {isLogin ? <LoginForm /> : null}
+                    {isLogin ? (
+                        <LoginForm />
+                    ) : (
+                        <SignupForm handleAuthPageClose={handleAuthPageClose} />
+                    )}
 
                     <Typography
                         className={classes.toggleLoginRegister}

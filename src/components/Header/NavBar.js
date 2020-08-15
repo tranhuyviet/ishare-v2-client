@@ -40,11 +40,11 @@ const NavBar = () => {
                     {user && user.token && (
                         <>
                             <Avatar
-                                src="https://res.cloudinary.com/dzaxf70c4/image/upload/v1592381151/jqoyecsjkjtxxshaxhqt.jpg"
+                                src={user.avatarUrl}
                                 alt="user avatar"
                                 className={classes.avatar}
                             />
-                            <Typography className={classes.name}>Viet Tran</Typography>
+                            <Typography className={classes.name}>{user.name}</Typography>
 
                             <Divider
                                 orientation="vertical"
@@ -52,7 +52,11 @@ const NavBar = () => {
                                 color="inherit"
                                 style={{ margin: '0 16px' }}
                             />
-                            <Button startIcon={<ExitToAppIcon />} className={classes.iconButton}>
+                            <Button
+                                startIcon={<ExitToAppIcon />}
+                                className={classes.iconButton}
+                                onClick={() => logout()}
+                            >
                                 Logout
                             </Button>
                         </>

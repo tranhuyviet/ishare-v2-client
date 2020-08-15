@@ -11,39 +11,43 @@ export const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         marginTop: theme.spacing(1),
     },
-    facebookButtonContainer: {
+
+    facebookButton: {
+        textTransform: 'capitalize',
+        height: 45,
+        fontSize: '14px',
         background: '#3c5b98',
         padding: '0 16px',
         marginRight: theme.spacing(2),
         color: theme.palette.common.white,
-
-        border: '1px solid #3c5b98',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        border: 'none',
+        borderRadius: '5px',
+        letterSpacing: 1,
+        fontSize: '16px',
         '&:hover': {
-            color: '#3c5b98',
+            boxShadow: theme.shadows['1'],
         },
     },
-    facebookButton: {
-        textTransform: 'capitalize',
-        height: 42,
 
-        border: 'none',
-        outline: 'none',
-        background: 'transparent',
-        padding: 0,
-        margin: 0,
-        color: 'inherit',
-        fontSize: '14px',
-    },
-    googleButtonContainer: {
-        padding: 0,
-        margin: 0,
-        border: 'none',
-    },
     googleButton: {
         maxWidth: 303,
-        height: 42,
+        marginTop: theme.spacing(2),
+        height: 45,
+        paddingLeft: '10px!important',
+        width: '100%',
+        border: '1px solid!important',
+        borderColor: theme.palette.grey['400'],
+        boxShadow: 'none!important',
+        borderRadius: '5px!important',
+        letterSpacing: 1,
+        fontSize: '16px!important',
 
-        border: 'none',
-        background: 'transparent',
+        '&:hover': {
+            boxShadow: `${theme.shadows['1']}!important`,
+        },
     },
 }));
