@@ -144,7 +144,7 @@ const NavBar = () => {
                                     }}
                                 >
                                     <ListItemIcon>
-                                        <AssignmentIndIcon fontSize="medium" />
+                                        <AssignmentIndIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Profile" />
                                 </StyledMenuItem>
@@ -156,7 +156,7 @@ const NavBar = () => {
                                     }}
                                 >
                                     <ListItemIcon>
-                                        <ExitToAppIcon fontSize="medium" />
+                                        <ExitToAppIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Logout" />
                                 </StyledMenuItem>

@@ -4,12 +4,20 @@ import { Paper, Tab, Tabs, Grid, Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { AuthContext } from '../../context/authContext';
 
+import PostPage from '../pages/PostPage';
+
 const TabBar = () => {
     const classes = useStyles();
     const [tabValue, setTabValue] = useState(0);
+    const [postPageOpen, setPostPageOpen] = useState(false);
     const { user } = useContext(AuthContext);
+
     const handleChange = (event, newValue) => {
         setTabValue(newValue);
+    };
+
+    const handlePostPageClose = () => {
+        setPostPageOpen(false);
     };
 
     return (
@@ -40,11 +48,17 @@ const TabBar = () => {
                     />
                 </Tabs>
                 {user && user.token && (
-                    <Fab color="primary" size="medium" className={classes.fab}>
+                    <Fab
+                        color="primary"
+                        size="medium"
+                        className={classes.fab}
+                        onClick={() => setPostPageOpen(true)}
+                    >
                         <AddIcon />
                     </Fab>
                 )}
             </Grid>
+            <PostPage postPageOpen={postPageOpen} handlePostPageClose={handlePostPageClose} />
         </Paper>
     );
 };
