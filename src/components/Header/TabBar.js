@@ -23,9 +23,21 @@ const TabBar = () => {
                     onChange={handleChange}
                     classes={{ indicator: classes.indicator }}
                 >
-                    <Tab label="Newest" classes={{ selected: classes.tabSelected }} />
-                    <Tab label="Top Comments" classes={{ selected: classes.tabSelected }} />
-                    <Tab label="Top Likes" classes={{ selected: classes.tabSelected }} />
+                    <Tab
+                        label="Newest"
+                        classes={{ selected: classes.tabSelected }}
+                        className={classes.tab}
+                    />
+                    <Tab
+                        label="Top Comments"
+                        classes={{ selected: classes.tabSelected }}
+                        className={classes.tab}
+                    />
+                    <Tab
+                        label="Top Likes"
+                        classes={{ selected: classes.tabSelected }}
+                        className={classes.tab}
+                    />
                 </Tabs>
                 {user && user.token && (
                     <Fab color="primary" size="medium" className={classes.fab}>

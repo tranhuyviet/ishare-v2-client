@@ -52,7 +52,7 @@ const LoginForm = ({ handleAuthPageClose }) => {
             setAlertOpen(true);
         },
         update(proxy, result) {
-            console.log('RESULT', result);
+            // console.log('RESULT', result);
             authContext.login(result.data.login);
             handleAuthPageClose();
         },
@@ -66,8 +66,8 @@ const LoginForm = ({ handleAuthPageClose }) => {
             setAlertOpen(true);
         },
         update(proxy, result) {
-            console.log(values);
-            console.log('RESULT LOGIN FACEBOOK', result);
+            // console.log(values);
+            // console.log('RESULT LOGIN FACEBOOK', result);
             authContext.login(result.data.loginFacebook);
             handleAuthPageClose();
         },
@@ -82,7 +82,7 @@ const LoginForm = ({ handleAuthPageClose }) => {
         },
         update(proxy, result) {
             // console.log(values);
-            console.log('RESULT', result);
+            // console.log('RESULT', result);
             authContext.login(result.data.loginGoogle);
             handleAuthPageClose();
         },
@@ -96,35 +96,35 @@ const LoginForm = ({ handleAuthPageClose }) => {
 
     // FACEBOOK
     const responseFacebook = (response) => {
-        console.log(response);
+        // console.log(response);
         // delete values.email;
         // delete values.password;
         // delete values.recaptcha;
         values.facebookId = response.id;
         values.accessToken = response.accessToken;
-        console.log(values);
+        // console.log(values);
         loginFacebook();
     };
 
     const clickedFacebook = (data) => {
-        console.log('click on facebook', data);
+        // console.log('click on facebook', data);
     };
 
     // GOOGLE
     const responseGoogle = (response) => {
-        console.log('GOOGLE', response);
-        console.log(response);
+        // console.log('GOOGLE', response);
+        // console.log(response);
         // delete values.email;
         // delete values.password;
         values.googleId = response.googleId;
         values.idToken = response.tokenObj.id_token;
-        console.log(values);
+        // console.log(values);
         loginGoogle();
     };
 
     return (
         <div>
-            {errors.global && (
+            {errors && errors.global && (
                 <Snackbar
                     open={alertOpen}
                     autoHideDuration={6000}
@@ -171,6 +171,7 @@ const LoginForm = ({ handleAuthPageClose }) => {
                 <ReCAPTCHA
                     sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
                     onChange={(value) => setFieldValue('recaptcha', value)}
+                    className={classes.recaptcha}
                 />
                 {errors.recaptcha && (
                     <p
@@ -184,7 +185,12 @@ const LoginForm = ({ handleAuthPageClose }) => {
                         {errors.recaptcha}
                     </p>
                 )}
-                <MyButton type="submit" title="Login" style={{ margin: '24px 0' }} fullWidth>
+                <MyButton
+                    type="submit"
+                    title="Login"
+                    style={{ margin: '18px 0', height: 45 }}
+                    fullWidth
+                >
                     Login
                 </MyButton>
                 <Divider />

@@ -68,7 +68,7 @@ const SignupForm = ({ handleAuthPageClose }) => {
     return (
         <div>
             <form noValidate onSubmit={handleSubmit} className={classes.root}>
-                {loading && <CircularProgress />}
+                {loading && <CircularProgress style={{ marginBottom: '16px' }} />}
                 <TextField
                     type="text"
                     name="name"
@@ -129,6 +129,7 @@ const SignupForm = ({ handleAuthPageClose }) => {
                 <ReCAPTCHA
                     sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
                     onChange={(value) => setFieldValue('recaptcha', value)}
+                    className={classes.recaptcha}
                 />
                 {errors.recaptcha && (
                     <p
@@ -142,7 +143,7 @@ const SignupForm = ({ handleAuthPageClose }) => {
                         {errors.recaptcha}
                     </p>
                 )}
-                <MyButton type="submit" title="Register" style={{ margin: '24px 0 0 0' }} fullWidth>
+                <MyButton type="submit" title="Register" style={{ margin: '18px 0 0 0' }} fullWidth>
                     {loading && <CircularProgress />}
                     {!loading && 'Register'}
                 </MyButton>

@@ -33,25 +33,12 @@ export const useStyles = makeStyles((theme) => ({
         fontWeight: '900',
         color: theme.palette.primary.main,
     },
-    // actionIcons: {
-    //     display: 'flex',
-    //     alignItems: 'center',
-    // },
+
     icon: {
         fontSize: '24px',
         marginRight: '32px',
         color: theme.palette.common.colorBlack,
     },
-    // avatarContainer: {
-    //     display: 'flex',
-    //     alignItems: 'center',
-    //     paddingRight: '20px',
-    //     borderRight: `1px solid ${theme.palette.common.colorGreyLight}`,
-    //     '&:hover': {
-    //         cursor: 'pointer',
-    //         color: theme.palette.common.colorGreen,
-    //     },
-    // },
     avatar: {
         width: theme.spacing(4),
         height: theme.spacing(4),
@@ -70,5 +57,18 @@ export const useStyles = makeStyles((theme) => ({
     iconButton: {
         textTransform: 'capitalize!important',
         fontSize: '16px!important',
+    },
+    actionContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        [theme.breakpoints.down('xs')]: {
+            display: 'none',
+        },
+    },
+    menuButton: {
+        display: 'none!important',
+        [theme.breakpoints.down('xs')]: {
+            display: 'inline-block!important',
+        },
     },
 }));

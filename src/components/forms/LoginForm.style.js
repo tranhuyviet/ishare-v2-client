@@ -4,13 +4,26 @@ export const useStyles = makeStyles((theme) => ({
     root: {
         '& .MuiTextField-root': {
             marginBottom: theme.spacing(3),
+            [theme.breakpoints.down('xs')]: {
+                marginBottom: theme.spacing(2),
+            },
         },
         maxWidth: 303,
         textAlign: 'center',
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: '250px',
+        },
     },
     oauthContainer: {
         textAlign: 'center',
         marginTop: theme.spacing(1),
+    },
+
+    recaptcha: {
+        [theme.breakpoints.down('xs')]: {
+            transform: 'scale(0.82)',
+            marginLeft: '-23px',
+        },
     },
 
     facebookButton: {
@@ -34,7 +47,6 @@ export const useStyles = makeStyles((theme) => ({
     },
 
     googleButton: {
-        maxWidth: 303,
         marginTop: theme.spacing(2),
         height: 45,
         paddingLeft: '10px!important',

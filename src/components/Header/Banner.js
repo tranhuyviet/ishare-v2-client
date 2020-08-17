@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { useStyles } from './Banner.style';
-import { Grid, Avatar, Typography, Paper, CardActionArea } from '@material-ui/core';
+import { Grid, Avatar, Typography, Paper, CardActionArea, useMediaQuery } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
 import MyButton from '../shared/MyButton';
 
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
@@ -10,28 +11,48 @@ import { AuthContext } from '../../context/authContext';
 
 const Banner = () => {
     const classes = useStyles();
+    const theme = useTheme();
+    const isXS = useMediaQuery(theme.breakpoints.down('xs'));
     const { user } = useContext(AuthContext);
 
     return (
         <>
             {user && user.token && (
                 <Paper className={classes.banner} elevation={0} square>
-                    <Grid container className={classes.container} spacing={4}>
-                        <Grid item xs={4} container justify="flex-end" alignItems="center">
+                    <Grid container className={classes.container}>
+                        <Grid item xs={12} sm={4} className={classes.avatarContainer}>
                             <Avatar
                                 src={user.avatarUrl}
                                 alt="user avatar"
                                 className={classes.avatar}
                             />
                         </Grid>
-                        <Grid item xs={8} container direction="column" justify="center" spacing={4}>
-                            <Grid item container alignItems="center">
+                        <Grid
+                            item
+                            xs={12}
+                            sm={8}
+                            container
+                            spacing={2}
+                            className={classes.rightContainer}
+                            alignItems="flex-start"
+                            justify="center"
+                            direction="column"
+                        >
+                            <Grid item className={classes.nameContainer}>
                                 <Typography variant="h5" className={classes.name}>
                                     {user.name}
                                 </Typography>
-                                <MyButton title="Profile" />
+                                <MyButton
+                                    title="Profile"
+                                    style={{ display: isXS ? 'none' : 'inherit' }}
+                                />
                             </Grid>
-                            <Grid item container alignItems="center">
+                            <Grid
+                                item
+                                container
+                                alignItems="center"
+                                className={classes.infosContainer}
+                            >
                                 <Grid item className={classes.infoContainer}>
                                     <CardActionArea className={classes.infoGroup}>
                                         <AddAPhotoIcon className={classes.icon} />

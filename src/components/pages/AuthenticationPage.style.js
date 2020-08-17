@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
     dialog: {
-        maxWidth: 400,
+        maxWidth: 303,
     },
     dialogTitleContainer: {
         padding: 0,
@@ -19,6 +19,9 @@ export const useStyles = makeStyles((theme) => ({
     },
     formContainer: {
         padding: '24px 8px',
+        [theme.breakpoints.down('xs')]: {
+            padding: '12px 4px 24px 4px',
+        },
     },
     personIcon: {
         fontSize: '70px',
@@ -27,6 +30,10 @@ export const useStyles = makeStyles((theme) => ({
         borderRadius: '50%',
         padding: '5px',
         marginBottom: theme.spacing(3),
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '50px',
+            marginBottom: theme.spacing(2),
+        },
     },
     toggleLoginRegister: {
         textAlign: 'center',

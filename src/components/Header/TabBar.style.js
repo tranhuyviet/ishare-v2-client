@@ -7,6 +7,14 @@ export const useStyles = makeStyles((theme) => ({
     fab: {
         marginTop: theme.spacing(3),
     },
+    tab: {
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '12px',
+        },
+    },
+    tabSelected: {
+        fontWeight: 'bold',
+    },
     // indicator: {
     //     height: 0,
     // },
