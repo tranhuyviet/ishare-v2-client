@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useStyles } from './PostPage.style';
 
 import {
     Dialog,
     DialogTitle,
     DialogContent,
-    Typography,
+    // Typography,
     IconButton,
-    Grid,
+    // Grid,
 } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';

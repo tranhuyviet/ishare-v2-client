@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { TextField, CircularProgress, Typography, Divider, Snackbar } from '@material-ui/core';
 
 import gql from 'graphql-tag';
-import { loginSchema } from '../../schemas';
+import { loginSchema } from '../../schemas/userSchema';
 import { useMutation } from '@apollo/react-hooks';
 
 import errorParse from '../../utils/errorParse';

@@ -10,7 +10,7 @@ import { useMutation } from '@apollo/react-hooks';
 
 import errorParse from '../../utils/errorParse';
 
-import { signupSchema } from '../../schemas';
+import { signupSchema } from '../../schemas/userSchema';
 
 import ReCAPTCHA from 'react-google-recaptcha';
 import MyButton from '../shared/MyButton';

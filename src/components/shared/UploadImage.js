@@ -19,6 +19,13 @@ const useStyles = makeStyles((theme) => ({
         },
         outline: 'none',
     },
+    errorMessage: {
+        color: '#f44336',
+        fontSize: 12,
+        padding: 0,
+        margin: '-10px 0 0 14px',
+        textAlign: 'left',
+    },
 }));
 
 const thumbsContainer = {
@@ -53,7 +60,7 @@ const img = {
     height: '100%',
 };
 
-const UploadImage = ({ files, setFiles, multiple, text }) => {
+const UploadImage = ({ files, setFiles, multiple, text, errorMessage }) => {
     const classes = useStyles();
     const [rejectMessage, setRejectMessage] = useState('');
     const { getRootProps, getInputProps } = useDropzone({
@@ -70,14 +77,14 @@ const UploadImage = ({ files, setFiles, multiple, text }) => {
         multiple: multiple ? true : false,
         onDropRejected: (rejectedFiles) => {
             // console.log('REject', rejectedFiles);
-            setRejectMessage('Only accepted image files. Please try again.');
+            setRejectMessage('Only accepted image files.');
         },
     });
 
     const thumbs = files.map((file) => (
         <div style={thumb} key={file.name}>
             <div style={thumbInner}>
-                <img src={file.preview} style={img} />
+                <img src={file.preview} style={img} alt={file.name} />
             </div>
         </div>
     ));
@@ -99,7 +106,13 @@ const UploadImage = ({ files, setFiles, multiple, text }) => {
                 </div>
             </div>
             <aside style={thumbsContainer}>{thumbs}</aside>
-            {rejectMessage && <p style={{ color: 'red' }}>** {rejectMessage}</p>}
+            {rejectMessage && (
+                <>
+                    <p className={classes.errorMessage}>** {rejectMessage}</p>
+                    <br />
+                </>
+            )}
+            {errorMessage && <p className={classes.errorMessage}>{errorMessage}</p>}
         </section>
     );
 };
