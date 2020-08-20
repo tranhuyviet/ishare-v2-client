@@ -11,10 +11,12 @@ import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import errorParse from '../../utils/errorParse';
 import { createPostSchema } from '../../schemas/postSchema';
+import Spinner from '../shared/Spinner';
 
 const PostForm = ({ handlePostPageClose }) => {
     const classes = useStyles();
     const [files, setFiles] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const initialValues = {
         content: '',
@@ -40,28 +42,35 @@ const PostForm = ({ handlePostPageClose }) => {
 
     function onSubmit() {
         console.log('Submit');
-
-        files.forEach(async (file, index) => {
-            const data = new FormData();
-            data.append('file', file);
-            data.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PRESET_POSTS);
-            const res = await axios.post(process.env.REACT_APP_CLOUDINARY_URL, data);
-            values.images.push(res.data.secure_url);
-            setValues(values);
-            if (index === files.length - 1) {
-                createPost();
-            }
-        });
+        try {
+            setIsLoading(true);
+            files.forEach(async (file, index) => {
+                const data = new FormData();
+                data.append('file', file);
+                data.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PRESET_POSTS);
+                const res = await axios.post(process.env.REACT_APP_CLOUDINARY_URL, data);
+                values.images.push(res.data.secure_url);
+                setValues(values);
+                if (index === files.length - 1) {
+                    createPost();
+                }
+            });
+        } catch (error) {
+            setIsLoading(false);
+            console.error(error);
+        }
     }
 
     const [createPost, { loading }] = useMutation(CREATE_POST_MUTATION, {
         variables: values,
         onError(error) {
             console.log('CREATE POST ERROR', error);
+            setIsLoading(false);
             setErrors(errorParse(error));
         },
         update(proxy, result) {
             console.log('CREATE POST RESULT', result);
+            setIsLoading(false);
             handlePostPageClose();
         },
     });
@@ -78,7 +87,7 @@ const PostForm = ({ handlePostPageClose }) => {
     return (
         <div>
             <form noValidate onSubmit={handleSubmit} className={classes.root}>
-                {loading && <CircularProgress />}
+                <Spinner open={isLoading} />
                 <TextField
                     name="content"
                     error={errors.content ? true : false}
