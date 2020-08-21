@@ -6,6 +6,7 @@ import {
     CardMedia,
     CardContent,
     CardActions,
+    CardActionArea,
     Typography,
     IconButton,
     ListItemIcon,
@@ -25,11 +26,14 @@ import moment from 'moment';
 import { useStyles } from './PostCard.style';
 import { AuthContext } from '../../context/authContext';
 
+import PostDetailPage from '../pages/PostDetailPage';
+
 const PostCard = ({ post }) => {
     const classes = useStyles();
     const { user } = useContext(AuthContext);
     const userId = user.id;
     const [anchorEl, setAnchorEl] = useState(null);
+    const [postDetailPageOpen, setPostDetailPageOpen] = useState(false);
 
     const handleMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -37,6 +41,10 @@ const PostCard = ({ post }) => {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
+    };
+
+    const handlePostDetailPageClose = () => {
+        setPostDetailPageOpen(false);
     };
 
     return (
@@ -84,12 +92,21 @@ const PostCard = ({ post }) => {
                 subheader={moment(post.createdAt * 1).fromNow(true)}
                 className={classes.cardHeader}
             />
-            <CardMedia image={post.images[0]} title={post.content} className={classes.cardImage} />
-            <CardContent className={classes.cardContent}>
-                <Typography variant="body2" component="p" className={classes.contentText}>
-                    {post.content}
-                </Typography>
-            </CardContent>
+            <CardActionArea
+                className={classes.cardActionArea}
+                onClick={() => setPostDetailPageOpen(true)}
+            >
+                <CardMedia
+                    image={post.images[0]}
+                    title={post.content}
+                    className={classes.cardImage}
+                />
+                <CardContent className={classes.cardContent}>
+                    <Typography variant="body2" component="p" className={classes.contentText}>
+                        {post.content}
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
             <CardActions disableSpacing>
                 <IconButton>
                     <FavoriteBorderIcon />
@@ -100,6 +117,11 @@ const PostCard = ({ post }) => {
                 </IconButton>
                 <Typography>34</Typography>
             </CardActions>
+            <PostDetailPage
+                postDetailPageOpen={postDetailPageOpen}
+                handlePostDetailPageClose={handlePostDetailPageClose}
+                post={post}
+            />
         </Card>
     );
 };

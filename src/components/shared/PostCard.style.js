@@ -5,9 +5,15 @@ export const useStyles = makeStyles((theme) => ({
         maxWidth: '100%',
         // borderTop: '1px solid',
         // borderTopColor: theme.palette.primary.main,
+        boxShadow: theme.shadows['2'],
     },
     cardHeader: {
         padding: 8,
+    },
+    cardActionArea: {
+        '&:hover': {
+            filter: 'brightness(80%)',
+        },
     },
     cardImage: {
         minHeight: 350,

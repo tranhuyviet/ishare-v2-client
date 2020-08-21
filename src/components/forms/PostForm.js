@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useStyles } from './PostForm.style';
-import { TextField, CircularProgress, Grid } from '@material-ui/core';
+import { TextField, CircularProgress, Grid, Snackbar } from '@material-ui/core';
 import axios from 'axios';
 
 import { useFormik } from 'formik';
@@ -12,11 +12,14 @@ import { useMutation } from '@apollo/react-hooks';
 import errorParse from '../../utils/errorParse';
 import { createPostSchema } from '../../schemas/postSchema';
 import Spinner from '../shared/Spinner';
+import Alert from '../shared/Alert';
 
 const PostForm = ({ handlePostPageClose }) => {
     const classes = useStyles();
     const [files, setFiles] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [alertOpen, setAlertOpen] = useState(false);
 
     const initialValues = {
         content: '',
@@ -42,13 +45,26 @@ const PostForm = ({ handlePostPageClose }) => {
 
     function onSubmit() {
         console.log('Submit');
+        if (!files || files.length === 0) {
+            console.log('cac');
+            setErrorMessage('You have to upload at least one image');
+            return;
+        }
         try {
             setIsLoading(true);
+            console.log('FILE', files);
             files.forEach(async (file, index) => {
                 const data = new FormData();
                 data.append('file', file);
                 data.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PRESET_POSTS);
-                const res = await axios.post(process.env.REACT_APP_CLOUDINARY_URL, data);
+                let res;
+                try {
+                    res = await axios.post(process.env.REACT_APP_CLOUDINARY_URL, data);
+                } catch (error) {
+                    setIsLoading(false);
+                    setAlertOpen(true);
+                    throw error;
+                }
                 values.images.push(res.data.secure_url);
                 setValues(values);
                 if (index === files.length - 1) {
@@ -57,6 +73,7 @@ const PostForm = ({ handlePostPageClose }) => {
             });
         } catch (error) {
             setIsLoading(false);
+            setAlertOpen(true);
             console.error(error);
         }
     }
@@ -88,6 +105,7 @@ const PostForm = ({ handlePostPageClose }) => {
         <div>
             <form noValidate onSubmit={handleSubmit} className={classes.root}>
                 <Spinner open={isLoading} />
+
                 <TextField
                     name="content"
                     error={errors.content ? true : false}
@@ -107,13 +125,22 @@ const PostForm = ({ handlePostPageClose }) => {
                     setFiles={setFiles}
                     multiple
                     text="Upload your images"
-                    errorMessage={errors.images}
+                    errorMessage={errorMessage}
                 />
 
                 <Grid container justify="flex-end" style={{ paddingTop: 16, paddingBottom: 16 }}>
                     <MyButton title="Cancel" onClick={() => handlePostPageClose()} />
                     <MyButton title="Post" type="submit" style={{ marginLeft: 16 }} />
                 </Grid>
+                <Snackbar
+                    open={alertOpen}
+                    autoHideDuration={6000}
+                    onClose={() => setAlertOpen(false)}
+                >
+                    <Alert onClose={() => setAlertOpen(false)} severity="error">
+                        Something went wrong. Please try again.
+                    </Alert>
+                </Snackbar>
             </form>
         </div>
     );
