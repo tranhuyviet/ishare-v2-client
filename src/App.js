@@ -17,7 +17,7 @@ function App() {
         },
         share: {
             container: {
-                maxWidth: '975px',
+                maxWidth: '1050px',
                 margin: '0 auto',
                 height: '100%',
                 padding: '0 16px',
