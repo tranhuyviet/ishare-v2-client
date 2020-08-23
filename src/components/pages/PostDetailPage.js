@@ -28,7 +28,9 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useFormik } from 'formik';
 import { commentSchema } from '../../schemas/commentSchema';
 
-const PostDetailPage = ({ post, postDetailPageOpen, handlePostDetailPageClose }) => {
+import LikeButton from '../shared/LikeButton';
+
+const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageClose }) => {
     const classes = useStyles();
     const initialValues = {
         comment: '',
@@ -69,6 +71,7 @@ const PostDetailPage = ({ post, postDetailPageOpen, handlePostDetailPageClose })
         createComment();
     }
 
+    console.log('POST DETAIL RENDER');
     return (
         <Dialog
             open={postDetailPageOpen}
@@ -141,10 +144,10 @@ const PostDetailPage = ({ post, postDetailPageOpen, handlePostDetailPageClose })
                             ))}
                     </div>
                     <Paper elevation={0} square className={classes.actionContainer}>
-                        <IconButton>
-                            <FavoriteBorderIcon />
-                        </IconButton>
-                        <Typography style={{ fontWeight: 'bold' }}>12 likes</Typography>
+                        <LikeButton post={post} user={user} />
+                        <Typography style={{ fontWeight: 'bold' }}>
+                            {post.likeCount} likes
+                        </Typography>
 
                         <ChatBubbleOutlineIcon style={{ margin: '0 12px 0 32px' }} />
 
@@ -196,6 +199,7 @@ const CREATE_COMMENT_MUTATION = gql`
                     avatarUrl
                 }
             }
+            commentCount
         }
     }
 `;

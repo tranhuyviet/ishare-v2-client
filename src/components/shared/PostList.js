@@ -9,7 +9,6 @@ const PostList = () => {
     const classes = useStyles();
     const { loading, data } = useQuery(GET_POSTS_QUERY);
 
-    console.log(data);
     return (
         <Paper elevation={0} square>
             <Grid container justify="space-between" className={classes.container}>
@@ -54,7 +53,18 @@ const GET_POSTS_QUERY = gql`
                     avatarUrl
                 }
             }
+            likes {
+                id
+                createdAt
+                user {
+                    id
+                    name
+                    avatarUrl
+                }
+            }
             commentCount
+            likeCount
+            isLiked
         }
     }
 `;

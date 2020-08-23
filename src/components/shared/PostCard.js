@@ -30,6 +30,7 @@ import { useStyles } from './PostCard.style';
 import { AuthContext } from '../../context/authContext';
 
 import PostDetailPage from '../pages/PostDetailPage';
+import LikeButton from '../shared/LikeButton';
 
 const PostCard = ({ post }) => {
     const classes = useStyles();
@@ -115,20 +116,21 @@ const PostCard = ({ post }) => {
                 ) : null}
             </CardActionArea>
             <CardActions disableSpacing>
-                <IconButton>
-                    <FavoriteBorderIcon />
-                </IconButton>
-                <Typography>12</Typography>
+                <LikeButton post={post} user={user} />
+                <Typography>{post.likeCount}</Typography>
                 <IconButton style={{ marginLeft: 16 }}>
                     <ChatBubbleOutlineIcon />
                 </IconButton>
                 <Typography>{post.commentCount}</Typography>
             </CardActions>
-            <PostDetailPage
-                postDetailPageOpen={postDetailPageOpen}
-                handlePostDetailPageClose={handlePostDetailPageClose}
-                post={post}
-            />
+            {postDetailPageOpen ? (
+                <PostDetailPage
+                    postDetailPageOpen={postDetailPageOpen}
+                    handlePostDetailPageClose={handlePostDetailPageClose}
+                    post={post}
+                    user={user}
+                />
+            ) : null}
         </Card>
     );
 };
