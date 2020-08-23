@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     Dialog,
     DialogTitle,
@@ -17,18 +17,59 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import CommentIcon from '@material-ui/icons/Comment';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 
+import Spinner from '../shared/Spinner';
+
 import moment from 'moment';
 
 import { useStyles } from './PostDetailPage.style';
 
+import gql from 'graphql-tag';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useFormik } from 'formik';
+import { commentSchema } from '../../schemas/commentSchema';
+
 const PostDetailPage = ({ post, postDetailPageOpen, handlePostDetailPageClose }) => {
     const classes = useStyles();
+    const initialValues = {
+        comment: '',
+        postId: post.id,
+    };
+
+    const {
+        values,
+        handleChange,
+        handleSubmit,
+        handleBlur,
+        errors,
+        setErrors,
+        isValid,
+        setValues,
+        // touched,
+        // setFieldValue,
+    } = useFormik({
+        initialValues,
+        onSubmit,
+        validationSchema: commentSchema,
+        isInitialValid: commentSchema.isValidSync(initialValues),
+    });
+
+    const [createComment, { loading }] = useMutation(CREATE_COMMENT_MUTATION, {
+        variables: values,
+        onError(error) {
+            console.log(error);
+        },
+        update(proxy, result) {
+            console.log('RESULT', result);
+            setValues(initialValues);
+        },
+    });
+
+    function onSubmit(values) {
+        console.log('submit', values);
+        createComment();
+    }
+
     return (
-        // <Backdrop
-        //     open={postDetailPageOpen}
-        //     onClick={handlePostDetailPageClose}
-        //     className={classes.backdrop}
-        // >
         <Dialog
             open={postDetailPageOpen}
             onClose={handlePostDetailPageClose}
@@ -36,11 +77,6 @@ const PostDetailPage = ({ post, postDetailPageOpen, handlePostDetailPageClose })
             fullWidth={true}
             maxWidth={'md'}
         >
-            {/* <DialogTitle className={classes.dialogTitle}>
-                <IconButton className={classes.closeButton}>
-                    <CloseIcon />
-                </IconButton>
-            </DialogTitle> */}
             <Grid container className={classes.gridContainer}>
                 <Grid
                     item
@@ -67,6 +103,7 @@ const PostDetailPage = ({ post, postDetailPageOpen, handlePostDetailPageClose })
                         className={classes.cardHeader}
                     />
                     <div className={classes.commentContainer}>
+                        {/* this path is content of post */}
                         <CardHeader
                             avatar={<Avatar src={post.user.avatarUrl} alt={post.user.name} />}
                             title={
@@ -78,22 +115,30 @@ const PostDetailPage = ({ post, postDetailPageOpen, handlePostDetailPageClose })
                             subheader={moment(post.createdAt * 1).fromNow(true)}
                             className={classes.comment}
                         />
-                        <CardHeader
-                            avatar={<Avatar src={post.user.avatarUrl} alt={post.user.name} />}
-                            title={
-                                <span className={classes.userName}>
-                                    {post.user.name}
-                                    <span className={classes.contentText}>
-                                        {' '}
-                                        "Hello everyone 💋🥰. May this short vacation break allow us
-                                        all to make the best decisions for the future and come back
-                                        stronger and more committed than ever. . See you soon! 💪🏼👊🏼"
-                                    </span>
-                                </span>
-                            }
-                            subheader={moment(post.createdAt * 1).fromNow(true)}
-                            className={classes.comment}
-                        />
+                        {/* this path is comments */}
+                        {post.comments &&
+                            post.comments.map((comment) => (
+                                <CardHeader
+                                    key={comment.id}
+                                    avatar={
+                                        <Avatar
+                                            src={comment.user.avatarUrl}
+                                            alt={comment.user.name}
+                                        />
+                                    }
+                                    title={
+                                        <span className={classes.userName}>
+                                            {comment.user.name}
+                                            <span className={classes.contentText}>
+                                                {' '}
+                                                {comment.comment}
+                                            </span>
+                                        </span>
+                                    }
+                                    subheader={moment(comment.createdAt).fromNow(true)}
+                                    className={classes.comment}
+                                />
+                            ))}
                     </div>
                     <Paper elevation={0} square className={classes.actionContainer}>
                         <IconButton>
@@ -103,30 +148,56 @@ const PostDetailPage = ({ post, postDetailPageOpen, handlePostDetailPageClose })
 
                         <ChatBubbleOutlineIcon style={{ margin: '0 12px 0 32px' }} />
 
-                        <Typography style={{ fontWeight: 'bold' }}>34 comments</Typography>
+                        <Typography style={{ fontWeight: 'bold' }}>
+                            {post.commentCount} comments
+                        </Typography>
                     </Paper>
-                    <Paper elevation={0} square className={classes.inputContainer}>
-                        <textarea
-                            name="comment"
-                            placeholder="Add a comment"
-                            className={classes.input}
-                            autoComplete="off"
-                            autoCorrect="off"
-                            wrap="hard"
-                            height="18"
-                        ></textarea>
-                        <Button type="submit" className={classes.postButton} color="primary">
-                            Post
-                        </Button>
+                    <Paper elevation={0} square>
+                        <form className={classes.inputContainer} noValidate onSubmit={handleSubmit}>
+                            <textarea
+                                name="comment"
+                                placeholder="Add a comment"
+                                className={classes.input}
+                                autoComplete="off"
+                                autoCorrect="off"
+                                wrap="hard"
+                                height="18"
+                                value={values.comment}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            ></textarea>
+                            <Button
+                                type="submit"
+                                className={classes.postButton}
+                                color="primary"
+                                disabled={!isValid}
+                            >
+                                Post
+                            </Button>
+                        </form>
                     </Paper>
                 </Grid>
             </Grid>
         </Dialog>
-        // <IconButton className={classes.closeButton}>
-        //     <CloseIcon fontSize="large" />
-        // </IconButton>
-        // </Backdrop>
     );
 };
 
-export default PostDetailPage;
+const CREATE_COMMENT_MUTATION = gql`
+    mutation createComment($postId: ID!, $comment: String!) {
+        createComment(postId: $postId, comment: $comment) {
+            id
+            comments {
+                id
+                comment
+                createdAt
+                user {
+                    id
+                    name
+                    avatarUrl
+                }
+            }
+        }
+    }
+`;
+
+export default React.memo(PostDetailPage);

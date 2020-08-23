@@ -31,6 +31,7 @@ export const useStyles = makeStyles((theme) => ({
     },
     contentText: {
         fontWeight: 'normal',
+        cursor: 'default',
     },
     cardHeader: {
         borderBottom: '1px solid',
@@ -39,6 +40,7 @@ export const useStyles = makeStyles((theme) => ({
         minWidth: 350,
         zIndex: 100,
         background: 'white',
+        // padding: '10px 16px 10px 16px',
     },
     commentContainer: {
         position: 'absolute',

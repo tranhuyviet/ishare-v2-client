@@ -21,6 +21,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import CommentIcon from '@material-ui/icons/Comment';
+import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import CollectionsOutlinedIcon from '@material-ui/icons/CollectionsOutlined';
+import CollectionsIcon from '@material-ui/icons/Collections';
 
 import moment from 'moment';
 import { useStyles } from './PostCard.style';
@@ -31,7 +34,7 @@ import PostDetailPage from '../pages/PostDetailPage';
 const PostCard = ({ post }) => {
     const classes = useStyles();
     const { user } = useContext(AuthContext);
-    const userId = user.id;
+
     const [anchorEl, setAnchorEl] = useState(null);
     const [postDetailPageOpen, setPostDetailPageOpen] = useState(false);
 
@@ -47,12 +50,13 @@ const PostCard = ({ post }) => {
         setPostDetailPageOpen(false);
     };
 
+    console.log('POST CARD RENDER');
     return (
         <Card className={classes.root}>
             <CardHeader
                 avatar={<Avatar src={post.user.avatarUrl} alt={post.user.name} />}
                 action={
-                    userId === post.user.id ? (
+                    user && user.userId === post.user.id ? (
                         <>
                             <IconButton onClick={handleMenuClick}>
                                 <MoreVertIcon />
@@ -106,6 +110,9 @@ const PostCard = ({ post }) => {
                         {post.content}
                     </Typography>
                 </CardContent>
+                {post.images.length > 1 ? (
+                    <CollectionsIcon className={classes.multiImagesIcon} />
+                ) : null}
             </CardActionArea>
             <CardActions disableSpacing>
                 <IconButton>
@@ -113,9 +120,9 @@ const PostCard = ({ post }) => {
                 </IconButton>
                 <Typography>12</Typography>
                 <IconButton style={{ marginLeft: 16 }}>
-                    <CommentIcon />
+                    <ChatBubbleOutlineIcon />
                 </IconButton>
-                <Typography>34</Typography>
+                <Typography>{post.commentCount}</Typography>
             </CardActions>
             <PostDetailPage
                 postDetailPageOpen={postDetailPageOpen}
@@ -126,4 +133,4 @@ const PostCard = ({ post }) => {
     );
 };
 
-export default PostCard;
+export default React.memo(PostCard);

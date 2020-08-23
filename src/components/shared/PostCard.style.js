@@ -11,9 +11,16 @@ export const useStyles = makeStyles((theme) => ({
         padding: 8,
     },
     cardActionArea: {
+        position: 'relative',
         '&:hover': {
             filter: 'brightness(80%)',
         },
+    },
+    multiImagesIcon: {
+        position: 'absolute',
+        right: 8,
+        top: 8,
+        color: theme.palette.common.white,
     },
     cardImage: {
         minHeight: 350,
