@@ -8,7 +8,7 @@ import { useStyles } from './PostList.style';
 const PostList = () => {
     const classes = useStyles();
     const { loading, data } = useQuery(GET_POSTS_QUERY);
-
+    console.log('data', data);
     return (
         <Paper elevation={0} square>
             <Grid container justify="space-between" className={classes.container}>

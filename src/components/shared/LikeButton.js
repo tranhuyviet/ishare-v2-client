@@ -19,7 +19,11 @@ const LikeButton = ({ post: { id, isLiked }, user }) => {
         <FavoriteBorderIcon />
     );
 
-    return <IconButton onClick={likePost}>{likeBtn}</IconButton>;
+    return (
+        <IconButton onClick={likePost} disabled={!user}>
+            {likeBtn}
+        </IconButton>
+    );
 };
 
 const LIKE_POST_MUTATION = gql`

@@ -10,6 +10,7 @@ import {
     Paper,
     Button,
     Typography,
+    CircularProgress,
 } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
@@ -159,7 +160,11 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
                         <form className={classes.inputContainer} noValidate onSubmit={handleSubmit}>
                             <textarea
                                 name="comment"
-                                placeholder="Add a comment"
+                                placeholder={
+                                    user
+                                        ? 'Add a comment'
+                                        : 'You must login to add comments and likes'
+                                }
                                 className={classes.input}
                                 autoComplete="off"
                                 autoCorrect="off"
@@ -168,15 +173,19 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
                                 value={values.comment}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled={!user || loading}
                             ></textarea>
                             <Button
                                 type="submit"
                                 className={classes.postButton}
                                 color="primary"
-                                disabled={!isValid}
+                                disabled={!isValid || !user || loading}
                             >
                                 Post
                             </Button>
+                            {loading && (
+                                <CircularProgress style={{ position: 'absolute', left: '50%' }} />
+                            )}
                         </form>
                     </Paper>
                 </Grid>

@@ -13,6 +13,7 @@ import {
     ListItemText,
     Divider,
     Grid,
+    Link,
 } from '@material-ui/core';
 import { StyledMenu, StyledMenuItem } from '../shared/StyledMenu';
 
@@ -31,6 +32,8 @@ import { AuthContext } from '../../context/authContext';
 
 import PostDetailPage from '../pages/PostDetailPage';
 import LikeButton from '../shared/LikeButton';
+import CommentList from '../shared/CommentLikeList';
+import MyLink from '../shared/MyLink';
 
 const PostCard = ({ post }) => {
     const classes = useStyles();
@@ -38,6 +41,8 @@ const PostCard = ({ post }) => {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [postDetailPageOpen, setPostDetailPageOpen] = useState(false);
+    const [commentListOpen, setCommentListOpen] = useState(false);
+    const [likeListOpen, setLikeListOpen] = useState(false);
 
     const handleMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -49,6 +54,14 @@ const PostCard = ({ post }) => {
 
     const handlePostDetailPageClose = () => {
         setPostDetailPageOpen(false);
+    };
+
+    const handleCommentListClose = () => {
+        setCommentListOpen(false);
+    };
+
+    const handleLikeListClose = () => {
+        setLikeListOpen(false);
     };
 
     console.log('POST CARD RENDER');
@@ -93,7 +106,7 @@ const PostCard = ({ post }) => {
                         </>
                     ) : null
                 }
-                title={post.user.name}
+                title={<span style={{ fontWeight: 'bold' }}>{post.user.name}</span>}
                 subheader={moment(post.createdAt * 1).fromNow(true)}
                 className={classes.cardHeader}
             />
@@ -117,11 +130,19 @@ const PostCard = ({ post }) => {
             </CardActionArea>
             <CardActions disableSpacing>
                 <LikeButton post={post} user={user} />
-                <Typography>{post.likeCount}</Typography>
-                <IconButton style={{ marginLeft: 16 }}>
+                <Typography style={{ fontWeight: 'bold', fontSize: '14px' }}>
+                    <MyLink onClick={() => setLikeListOpen(true)}>
+                        {post.likeCount} {post.likeCount > 1 ? 'likes' : 'like'}
+                    </MyLink>
+                </Typography>
+                <IconButton style={{ marginLeft: 16 }} onClick={() => setPostDetailPageOpen(true)}>
                     <ChatBubbleOutlineIcon />
                 </IconButton>
-                <Typography>{post.commentCount}</Typography>
+                <Typography style={{ fontWeight: 'bold', fontSize: '14px' }}>
+                    <MyLink onClick={() => setCommentListOpen(true)}>
+                        {post.commentCount} {post.commentCount > 1 ? 'comments' : 'comment'}
+                    </MyLink>
+                </Typography>
             </CardActions>
             {postDetailPageOpen ? (
                 <PostDetailPage
@@ -129,6 +150,23 @@ const PostCard = ({ post }) => {
                     handlePostDetailPageClose={handlePostDetailPageClose}
                     post={post}
                     user={user}
+                />
+            ) : null}
+            {commentListOpen ? (
+                <CommentList
+                    open={commentListOpen}
+                    close={handleCommentListClose}
+                    data={post.comments}
+                    title="Comments"
+                />
+            ) : null}
+            {likeListOpen ? (
+                <CommentList
+                    open={likeListOpen}
+                    close={handleLikeListClose}
+                    data={post.likes}
+                    title="Likes"
+                    isLike={true}
                 />
             ) : null}
         </Card>
