@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import {
     Dialog,
     DialogTitle,
@@ -30,9 +30,13 @@ import { useFormik } from 'formik';
 import { commentSchema } from '../../schemas/commentSchema';
 
 import LikeButton from '../shared/LikeButton';
+import CommentLikeList from '../shared/CommentLikeList';
+import MyLink from '../shared/MyLink';
 
 const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageClose }) => {
     const classes = useStyles();
+    const [commentListOpen, setCommentListOpen] = useState(false);
+    const [likeListOpen, setLikeListOpen] = useState(false);
     const initialValues = {
         comment: '',
         postId: post.id,
@@ -71,6 +75,14 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
         console.log('submit', values);
         createComment();
     }
+
+    const handleCommentListClose = () => {
+        setCommentListOpen(false);
+    };
+
+    const handleLikeListClose = () => {
+        setLikeListOpen(false);
+    };
 
     console.log('POST DETAIL RENDER');
     return (
@@ -146,14 +158,18 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
                     </div>
                     <Paper elevation={0} square className={classes.actionContainer}>
                         <LikeButton post={post} user={user} />
-                        <Typography style={{ fontWeight: 'bold' }}>
-                            {post.likeCount} likes
+                        <Typography style={{ fontWeight: 'bold', fontSize: '14px' }}>
+                            <MyLink onClick={() => setLikeListOpen(true)}>
+                                {post.likeCount} {post.likeCount > 1 ? 'likes' : 'like'}
+                            </MyLink>
                         </Typography>
 
                         <ChatBubbleOutlineIcon style={{ margin: '0 12px 0 32px' }} />
 
-                        <Typography style={{ fontWeight: 'bold' }}>
-                            {post.commentCount} comments
+                        <Typography style={{ fontWeight: 'bold', fontSize: '14px' }}>
+                            <MyLink onClick={() => setCommentListOpen(true)}>
+                                {post.commentCount} {post.commentCount > 1 ? 'comments' : 'comment'}
+                            </MyLink>
                         </Typography>
                     </Paper>
                     <Paper elevation={0} square>
@@ -190,6 +206,23 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
                     </Paper>
                 </Grid>
             </Grid>
+            {commentListOpen ? (
+                <CommentLikeList
+                    open={commentListOpen}
+                    close={handleCommentListClose}
+                    data={post.comments}
+                    title="Comments"
+                />
+            ) : null}
+            {likeListOpen ? (
+                <CommentLikeList
+                    open={likeListOpen}
+                    close={handleLikeListClose}
+                    data={post.likes}
+                    title="Likes"
+                    isLike={true}
+                />
+            ) : null}
         </Dialog>
     );
 };

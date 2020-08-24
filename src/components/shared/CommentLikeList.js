@@ -14,7 +14,7 @@ import { useStyles } from './CommentLikeList.style';
 
 export default ({ open, close, data, title, isLike }) => {
     const classes = useStyles();
-    console.log(data);
+
     const ids = data.map((item, index) => {
         return item.user.id;
     });
@@ -40,7 +40,7 @@ export default ({ open, close, data, title, isLike }) => {
         item.count = count;
         userDatas.push(item);
     });
-    console.log(userDatas);
+    // console.log(userDatas);
 
     return (
         <Dialog open={open} onClose={close}>

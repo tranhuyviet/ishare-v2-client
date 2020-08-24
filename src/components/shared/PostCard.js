@@ -32,7 +32,7 @@ import { AuthContext } from '../../context/authContext';
 
 import PostDetailPage from '../pages/PostDetailPage';
 import LikeButton from '../shared/LikeButton';
-import CommentList from '../shared/CommentLikeList';
+import CommentLikeList from '../shared/CommentLikeList';
 import MyLink from '../shared/MyLink';
 
 const PostCard = ({ post }) => {
@@ -64,7 +64,7 @@ const PostCard = ({ post }) => {
         setLikeListOpen(false);
     };
 
-    console.log('POST CARD RENDER');
+    // console.log('POST CARD RENDER');
     return (
         <Card className={classes.root}>
             <CardHeader
@@ -153,7 +153,7 @@ const PostCard = ({ post }) => {
                 />
             ) : null}
             {commentListOpen ? (
-                <CommentList
+                <CommentLikeList
                     open={commentListOpen}
                     close={handleCommentListClose}
                     data={post.comments}
@@ -161,7 +161,7 @@ const PostCard = ({ post }) => {
                 />
             ) : null}
             {likeListOpen ? (
-                <CommentList
+                <CommentLikeList
                     open={likeListOpen}
                     close={handleLikeListClose}
                     data={post.likes}
