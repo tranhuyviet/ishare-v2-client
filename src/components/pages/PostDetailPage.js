@@ -84,7 +84,7 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
         setLikeListOpen(false);
     };
 
-    console.log('POST DETAIL RENDER');
+    // console.log('POST DETAIL RENDER');
     return (
         <Dialog
             open={postDetailPageOpen}

@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import PostCard from './PostCard';
 import { useStyles } from './PostList.style';
+import { GET_POSTS_QUERY } from '../../utils/sharedGql';
 
 const PostList = () => {
     const classes = useStyles();
@@ -30,43 +31,5 @@ const PostList = () => {
         </Paper>
     );
 };
-
-const GET_POSTS_QUERY = gql`
-    {
-        getPosts {
-            id
-            content
-            images
-            createdAt
-            user {
-                id
-                name
-                avatarUrl
-            }
-            comments {
-                id
-                comment
-                createdAt
-                user {
-                    id
-                    name
-                    avatarUrl
-                }
-            }
-            likes {
-                id
-                createdAt
-                user {
-                    id
-                    name
-                    avatarUrl
-                }
-            }
-            commentCount
-            likeCount
-            isLiked
-        }
-    }
-`;
 
 export default PostList;

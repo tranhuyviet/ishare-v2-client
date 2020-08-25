@@ -13,6 +13,7 @@ import errorParse from '../../utils/errorParse';
 import { createPostSchema } from '../../schemas/postSchema';
 import Spinner from '../shared/Spinner';
 import Alert from '../shared/Alert';
+import { GET_POSTS_QUERY } from '../../utils/sharedGql';
 
 const PostForm = ({ handlePostPageClose }) => {
     const classes = useStyles();
@@ -20,6 +21,8 @@ const PostForm = ({ handlePostPageClose }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [alertOpen, setAlertOpen] = useState(false);
+    const [didMount, setDidMount] = useState(false);
+    const signal = axios.CancelToken.source();
 
     const initialValues = {
         content: '',
@@ -46,31 +49,64 @@ const PostForm = ({ handlePostPageClose }) => {
     function onSubmit() {
         console.log('Submit');
         if (!files || files.length === 0) {
-            console.log('cac');
             setErrorMessage('You have to upload at least one image');
             return;
         }
         try {
             setIsLoading(true);
             console.log('FILE', files);
-            files.forEach(async (file, index) => {
+            let i = 0;
+            files.forEach(async (file) => {
                 const data = new FormData();
                 data.append('file', file);
                 data.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PRESET_POSTS);
                 let res;
                 try {
-                    res = await axios.post(process.env.REACT_APP_CLOUDINARY_URL, data);
+                    res = await axios.post(process.env.REACT_APP_CLOUDINARY_URL, data, {
+                        cancelToken: signal.token,
+                    });
                 } catch (error) {
                     setIsLoading(false);
                     setAlertOpen(true);
                     throw error;
                 }
+                if (!res) {
+                    throw new Error('Upload images went wrong');
+                }
                 values.images.push(res.data.secure_url);
                 setValues(values);
-                if (index === files.length - 1) {
+                i++;
+                console.log('VALUE', values, i, files.length);
+                if (i === files.length) {
+                    console.log('CREATE POST');
                     createPost();
                 }
             });
+            console.log('continue');
+            // let images = [];
+            // files.forEach((file, index) => {
+            //     const data = new FormData();
+            //     data.append('file', file);
+            //     data.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PRESET_POSTS);
+            //     axios
+            //         .post(process.env.REACT_APP_CLOUDINARY_URL, data)
+            //         .then((res) => {
+            //             values.images.push(res.data.secure_url);
+            //             setValues({ ...values });
+            //         })
+            //         .then(() => {
+            //             if (index === files.length - 1) {
+            //                 console.log('created post', values);
+
+            //                 createPost();
+            //             }
+            //         })
+            //         .catch((error) => {
+            //             setIsLoading(false);
+            //             setAlertOpen(true);
+            //             throw error;
+            //         });
+            // });
         } catch (error) {
             setIsLoading(false);
             setAlertOpen(true);
@@ -78,6 +114,7 @@ const PostForm = ({ handlePostPageClose }) => {
         }
     }
 
+    console.log('POST FORM RENDER');
     const [createPost, { loading }] = useMutation(CREATE_POST_MUTATION, {
         variables: values,
         onError(error) {
@@ -86,20 +123,34 @@ const PostForm = ({ handlePostPageClose }) => {
             setErrors(errorParse(error));
         },
         update(proxy, result) {
-            console.log('CREATE POST RESULT', result);
-            setIsLoading(false);
-            handlePostPageClose();
+            try {
+                // console.log('RESULT', result);
+                const data = proxy.readQuery({
+                    query: GET_POSTS_QUERY,
+                });
+                // console.log('DATA GET', data);
+                // data.getPosts = [result.data.createPost, ...data.getPosts];
+                // console.log('DATA UPDATE', data);
+                proxy.writeQuery({
+                    query: GET_POSTS_QUERY,
+                    data: { getPosts: [result.data.createPost, ...data.getPosts] },
+                });
+                setIsLoading(false);
+                handlePostPageClose();
+            } catch (error) {
+                console.log('ERRRR', error);
+                setIsLoading(false);
+                setErrors(errorParse(error));
+            }
         },
     });
 
-    // useEffect(() => {
-    //     console.log('use effect', files.length);
-    //     if (files.length > 0) {
-    //         delete errors.images;
-    //         console.log('errors', errors);
-    //         setErrors(errors);
-    //     }
-    // }, [files, errors, setErrors]);
+    useEffect(() => {
+        setDidMount(true);
+        return () => setDidMount(false);
+    }, []);
+
+    if (!didMount) return null;
 
     return (
         <div>
@@ -108,7 +159,7 @@ const PostForm = ({ handlePostPageClose }) => {
 
                 <TextField
                     name="content"
-                    error={errors.content ? true : false}
+                    error={errors && errors.content ? true : false}
                     label="Content"
                     placeholder="This is the content"
                     variant="outlined"
@@ -118,7 +169,7 @@ const PostForm = ({ handlePostPageClose }) => {
                     value={values.content}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    helperText={errors.content}
+                    helperText={errors && errors.content}
                 />
                 <UploadImage
                     files={files}
@@ -152,11 +203,34 @@ const CREATE_POST_MUTATION = gql`
             id
             content
             images
+            createdAt
             user {
+                id
                 name
                 avatarUrl
             }
-            createdAt
+            comments {
+                id
+                createdAt
+                comment
+                user {
+                    id
+                    name
+                    avatarUrl
+                }
+            }
+            likes {
+                id
+                createdAt
+                user {
+                    id
+                    name
+                    avatarUrl
+                }
+            }
+            commentCount
+            likeCount
+            isLiked
         }
     }
 `;
