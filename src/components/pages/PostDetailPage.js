@@ -17,6 +17,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import CommentIcon from '@material-ui/icons/Comment';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 import Spinner from '../shared/Spinner';
 
@@ -33,10 +35,18 @@ import LikeButton from '../shared/LikeButton';
 import CommentLikeList from '../shared/CommentLikeList';
 import MyLink from '../shared/MyLink';
 
+import Fade from 'react-reveal/Fade';
+
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageClose }) => {
     const classes = useStyles();
     const [commentListOpen, setCommentListOpen] = useState(false);
     const [likeListOpen, setLikeListOpen] = useState(false);
+    const [imageIndex, setImageIndex] = useState(0);
+
     const initialValues = {
         comment: '',
         postId: post.id,
@@ -84,7 +94,24 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
         setLikeListOpen(false);
     };
 
-    // console.log('POST DETAIL RENDER');
+    const forwardImage = () => {
+        console.log('forward', imageIndex);
+        if (imageIndex >= post.images.length - 1) {
+            setImageIndex(0);
+        } else {
+            setImageIndex((imageIndex) => imageIndex + 1);
+        }
+    };
+
+    const backImage = () => {
+        console.log('backimage', imageIndex);
+        if (imageIndex === 0) {
+            setImageIndex(post.images.length - 1);
+        } else {
+            setImageIndex((imageIndex) => imageIndex - 1);
+        }
+    };
+
     return (
         <Dialog
             open={postDetailPageOpen}
@@ -102,7 +129,20 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
                     container
                     justify="center"
                 >
-                    <img src={post.images[0]} alt="post img" className={classes.images} />
+                    <img src={post.images[imageIndex]} alt="post img" className={classes.images} />
+
+                    {post.images && post.images.length > 1 ? (
+                        <>
+                            <ArrowBackIosIcon
+                                className={classes.arrowBackButton}
+                                onClick={() => backImage()}
+                            />
+                            <ArrowForwardIosIcon
+                                className={classes.arrowForwardButton}
+                                onClick={() => forwardImage()}
+                            />
+                        </>
+                    ) : null}
                 </Grid>
                 <Grid
                     item
