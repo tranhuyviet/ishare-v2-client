@@ -67,7 +67,7 @@ const LoginForm = ({ handleAuthPageClose }) => {
         },
         update(proxy, result) {
             // console.log(values);
-            // console.log('RESULT LOGIN FACEBOOK', result);
+            console.log('RESULT LOGIN FACEBOOK', result);
             authContext.login(result.data.loginFacebook);
             handleAuthPageClose();
         },
@@ -82,7 +82,7 @@ const LoginForm = ({ handleAuthPageClose }) => {
         },
         update(proxy, result) {
             // console.log(values);
-            // console.log('RESULT', result);
+            console.log('RESULT LOGIN GOOGLE', result);
             authContext.login(result.data.loginGoogle);
             handleAuthPageClose();
         },
@@ -232,6 +232,7 @@ const LOGIN = gql`
             avatarUrl
             token
             confirmed
+            numOfPosts
         }
     }
 `;
@@ -244,6 +245,7 @@ const LOGIN_FACEBOOK = gql`
             avatarUrl
             token
             confirmed
+            numOfPosts
         }
     }
 `;
@@ -256,6 +258,7 @@ const LOGIN_GOOGLE = gql`
             avatarUrl
             token
             confirmed
+            numOfPosts
         }
     }
 `;

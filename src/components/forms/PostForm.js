@@ -127,12 +127,14 @@ const PostForm = ({ handlePostPageClose }) => {
                 // console.log('RESULT', result);
                 const data = proxy.readQuery({
                     query: GET_POSTS_QUERY,
+                    variables: { page: 1 },
                 });
-                // console.log('DATA GET', data);
+                console.log('DATA GET', data);
                 // data.getPosts = [result.data.createPost, ...data.getPosts];
                 // console.log('DATA UPDATE', data);
                 proxy.writeQuery({
                     query: GET_POSTS_QUERY,
+                    variables: { page: 1 },
                     data: { getPosts: [result.data.createPost, ...data.getPosts] },
                 });
                 setIsLoading(false);
