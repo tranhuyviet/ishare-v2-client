@@ -13,9 +13,8 @@ export const useStyles = makeStyles((theme) => ({
     postCardContainer: {
         maxWidth: 350,
         padding: theme.spacing(2),
-        // [theme.breakpoints.down('sm')]: {
-        //     display: 'flex',
-        //     justifyContent: 'space-around',
-        // },
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: '100%',
+        },
     },
 }));

@@ -35,12 +35,6 @@ import LikeButton from '../shared/LikeButton';
 import CommentLikeList from '../shared/CommentLikeList';
 import MyLink from '../shared/MyLink';
 
-import Fade from 'react-reveal/Fade';
-
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
 const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageClose }) => {
     const classes = useStyles();
     const [commentListOpen, setCommentListOpen] = useState(false);
@@ -95,7 +89,7 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
     };
 
     const forwardImage = () => {
-        console.log('forward', imageIndex);
+        // console.log('forward', imageIndex);
         if (imageIndex >= post.images.length - 1) {
             setImageIndex(0);
         } else {
@@ -104,7 +98,7 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
     };
 
     const backImage = () => {
-        console.log('backimage', imageIndex);
+        // console.log('backimage', imageIndex);
         if (imageIndex === 0) {
             setImageIndex(post.images.length - 1);
         } else {
@@ -263,6 +257,13 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
                     isLike={true}
                 />
             ) : null}
+            <IconButton
+                color="primary"
+                className={classes.closeIcon}
+                onClick={handlePostDetailPageClose}
+            >
+                <CloseIcon />
+            </IconButton>
         </Dialog>
     );
 };

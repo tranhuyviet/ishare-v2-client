@@ -3,11 +3,15 @@ import { makeStyles } from '@material-ui/core/styles';
 export const useStyles = makeStyles((theme) => ({
     container: {
         ...theme.share.container,
+        position: 'relative',
     },
     gridContainer: {
         display: 'flex',
         flexWrap: 'nowrap',
         overflow: 'hidden',
+        [theme.breakpoints.down('xs')]: {
+            flexDirection: 'column',
+        },
     },
     imagesContainer: {
         maxWidth: 600,
@@ -15,6 +19,10 @@ export const useStyles = makeStyles((theme) => ({
         background: theme.palette.common.black,
         overflow: 'hidden',
         position: 'relative',
+        [theme.breakpoints.down('xs')]: {
+            // order: 2,
+            flexGrow: 1,
+        },
     },
     arrowBackButton: {
         position: 'absolute',
@@ -64,12 +72,27 @@ export const useStyles = makeStyles((theme) => ({
     },
     images: {
         display: 'block',
-        width: 'auto',
-        height: 600,
+        // width: 'auto',
+        // height: 600,
+        width: '100%',
+        height: '100%',
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+            height: '100%',
+        },
     },
     infoContainer: {
+        width: '100%',
         minWidth: 350,
         position: 'relative!important',
+        [theme.breakpoints.down('xs')]: {
+            flexGrow: 1,
+            width: '100%',
+            minWidth: '100%',
+            height: '100%',
+            minHeight: 300, //73 + 72 + 60 + 60 = 265
+            overflow: 'hidden',
+        },
     },
     userName: {
         fontWeight: 'bold',
@@ -83,11 +106,17 @@ export const useStyles = makeStyles((theme) => ({
     cardHeader: {
         borderBottom: '1px solid',
         borderBottomColor: theme.palette.grey['200'],
-        position: 'fixed',
-        minWidth: 350,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+
+        width: '100%',
         zIndex: 100,
         background: 'white',
         // padding: '10px 16px 10px 16px',
+        [theme.breakpoints.down('xs')]: {
+            display: 'none',
+        },
     },
     commentContainer: {
         position: 'absolute',
@@ -98,6 +127,10 @@ export const useStyles = makeStyles((theme) => ({
         '&::-webkit-scrollbar': {
             display: 'none',
         },
+        [theme.breakpoints.down('xs')]: {
+            top: 5,
+            height: 'calc(100% - 60px - 60px)',
+        },
     },
     comment: {
         display: 'flex',
@@ -105,7 +138,7 @@ export const useStyles = makeStyles((theme) => ({
     },
     actionContainer: {
         height: 60,
-        width: 350,
+        width: '100%',
         borderTop: '1px solid',
         borderTopColor: theme.palette.grey['200'],
         borderBottom: '1px solid',
@@ -118,7 +151,8 @@ export const useStyles = makeStyles((theme) => ({
     },
     inputContainer: {
         height: 60,
-        width: 350,
+        width: '100%',
+        // width: 350,
         // borderTop: '1px solid',
         // borderTopColor: theme.palette.grey['200'],
         position: 'absolute',
@@ -147,5 +181,15 @@ export const useStyles = makeStyles((theme) => ({
     },
     postButton: {
         textTransform: 'capitalize',
+    },
+    closeIcon: {
+        position: 'absolute',
+        right: 5,
+        top: 10,
+        zIndex: 10000,
+        [theme.breakpoints.down('xs')]: {
+            top: 0,
+            right: 0,
+        },
     },
 }));

@@ -2,13 +2,15 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
     root: {
-        maxWidth: '100%',
+        // maxWidth: 350,
+        width: '100%',
         // borderTop: '1px solid',
         // borderTopColor: theme.palette.primary.main,
         boxShadow: theme.shadows['2'],
     },
     cardHeader: {
         padding: 8,
+        width: '100%',
     },
     cardActionArea: {
         position: 'relative',
@@ -23,8 +25,8 @@ export const useStyles = makeStyles((theme) => ({
         color: theme.palette.common.white,
     },
     cardImage: {
-        minHeight: 350,
-        width: '100%',
+        minHeight: 318,
+        width: 'auto',
     },
     cardContent: {
         paddingBottom: 0,
