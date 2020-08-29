@@ -19,4 +19,20 @@ export const useStyles = makeStyles((theme) => ({
             transform: 'translateY(2px)',
         },
     },
+    reverse: {
+        backgroundColor: theme.palette.common.white,
+        color: theme.palette.primary.main,
+        '&:hover': {
+            color: theme.palette.common.white,
+            backgroundColor: theme.palette.primary.main,
+        },
+    },
+    redColor: {
+        backgroundColor: '#ED4956',
+        borderColor: '#ED4956',
+        '&:hover': {
+            color: '#ED4956',
+            backgroundColor: theme.palette.common.white,
+        },
+    },
 }));

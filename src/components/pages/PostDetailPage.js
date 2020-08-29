@@ -11,6 +11,7 @@ import {
     Button,
     Typography,
     CircularProgress,
+    Tooltip,
 } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
@@ -34,6 +35,7 @@ import { commentSchema } from '../../schemas/commentSchema';
 import LikeButton from '../shared/LikeButton';
 import CommentLikeList from '../shared/CommentLikeList';
 import MyLink from '../shared/MyLink';
+import DeleteButton from '../shared/DeleteButton';
 
 const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageClose }) => {
     const classes = useStyles();
@@ -187,6 +189,11 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
                                     }
                                     subheader={moment(comment.createdAt).fromNow(true)}
                                     className={classes.comment}
+                                    action={
+                                        comment.user.id.toString() === user.id.toString() ? (
+                                            <DeleteButton postId={post.id} commentId={comment.id} />
+                                        ) : null
+                                    }
                                 />
                             ))}
                     </div>

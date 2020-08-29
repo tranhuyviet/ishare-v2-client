@@ -135,6 +135,7 @@ export const useStyles = makeStyles((theme) => ({
     comment: {
         display: 'flex',
         alignItems: 'flex-start',
+        minWidth: 350,
     },
     actionContainer: {
         height: 60,
