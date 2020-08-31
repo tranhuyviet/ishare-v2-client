@@ -12,14 +12,28 @@ import {
     Divider,
 } from '@material-ui/core';
 import MyButton from './MyButton';
+import { GET_POSTS_QUERY } from '../../utils/sharedGql';
 
-const DeleteButton = ({ postId, commentId, callback }) => {
+const DeleteButton = ({ postId, commentId, callback, tooltipPlace, deleteType }) => {
     const [confirmOpen, setConfirmOpen] = useState(false);
+
+    console.log(postId, deleteType);
+    let mutation;
+    switch (deleteType) {
+        case 'comment':
+            mutation = DELETE_COMMENT_MUTATION;
+            break;
+        case 'post':
+            mutation = DELETE_POST_MUTATION;
+            break;
+        default:
+            break;
+    }
 
     const handleConfirmClose = () => {
         setConfirmOpen(false);
     };
-    const [deleteMutation] = useMutation(DELETE_COMMENT_MUTATION, {
+    const [deleteMutation] = useMutation(mutation, {
         variables: {
             postId,
             commentId,
@@ -30,11 +44,27 @@ const DeleteButton = ({ postId, commentId, callback }) => {
         },
         update(proxy) {
             setConfirmOpen(false);
+
+            // delete post
+            if (deleteType === 'post' && !commentId) {
+                console.log('DELETE POST', postId);
+                const data = proxy.readQuery({
+                    query: GET_POSTS_QUERY,
+                });
+                console.log('data', data);
+
+                proxy.writeQuery({
+                    query: GET_POSTS_QUERY,
+                    data: {
+                        getPosts: data.getPosts.filter((post) => post.id !== postId),
+                    },
+                });
+            }
         },
     });
     return (
         <>
-            <Tooltip title="Delete">
+            <Tooltip title="Delete" placement={tooltipPlace}>
                 <IconButton onClick={() => setConfirmOpen(true)}>
                     <DeleteOutlineIcon />
                 </IconButton>
@@ -57,6 +87,11 @@ const DeleteButton = ({ postId, commentId, callback }) => {
         </>
     );
 };
+const DELETE_POST_MUTATION = gql`
+    mutation deletePost($postId: ID!) {
+        deletePost(postId: $postId)
+    }
+`;
 
 const DELETE_COMMENT_MUTATION = gql`
     mutation deleteComment($postId: ID!, $commentId: ID!) {

@@ -14,6 +14,7 @@ import {
     Divider,
     Grid,
     Link,
+    Tooltip,
 } from '@material-ui/core';
 import { StyledMenu, StyledMenuItem } from '../shared/StyledMenu';
 
@@ -34,6 +35,9 @@ import PostDetailPage from '../pages/PostDetailPage';
 import LikeButton from '../shared/LikeButton';
 import CommentLikeList from '../shared/CommentLikeList';
 import MyLink from '../shared/MyLink';
+import DeleteButton from '../shared/DeleteButton';
+
+import { Image } from 'cloudinary-react';
 
 const PostCard = ({ post }) => {
     const classes = useStyles();
@@ -70,7 +74,7 @@ const PostCard = ({ post }) => {
             <CardHeader
                 avatar={<Avatar src={post.user.avatarUrl} alt={post.user.name} />}
                 action={
-                    user && user.userId === post.user.id ? (
+                    user && user.id === post.user.id ? (
                         <>
                             <IconButton onClick={handleMenuClick}>
                                 <MoreVertIcon />
@@ -86,21 +90,27 @@ const PostCard = ({ post }) => {
                                         handleMenuClose();
                                     }}
                                 >
-                                    <ListItemIcon>
-                                        <EditIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Edit" />
+                                    <Tooltip title="Edit" placement="left">
+                                        <IconButton>
+                                            <EditIcon />
+                                        </IconButton>
+                                    </Tooltip>
                                 </StyledMenuItem>
-                                <Divider />
+                                {/* <Divider /> */}
                                 <StyledMenuItem
                                     onClick={() => {
                                         handleMenuClose();
                                     }}
                                 >
-                                    <ListItemIcon>
+                                    {/* <ListItemIcon>
                                         <DeleteIcon />
                                     </ListItemIcon>
-                                    <ListItemText primary="Delete" />
+                                    <ListItemText primary="Delete" /> */}
+                                    <DeleteButton
+                                        tooltipPlace="left"
+                                        deleteType="post"
+                                        postId={post.id}
+                                    />
                                 </StyledMenuItem>
                             </StyledMenu>
                         </>
@@ -115,10 +125,16 @@ const PostCard = ({ post }) => {
                 onClick={() => setPostDetailPageOpen(true)}
             >
                 <CardMedia
-                    image={post.images[0]}
+                    image={process.env.REACT_APP_CLOUDINARY_LINK + post.images[0]}
                     title={post.content}
                     className={classes.cardImage}
                 />
+                {/* <Image
+                    cloudName={process.env.REACT_APP_CLOUDINARY_NAME}
+                    publicId={post.images[0]}
+                    className={classes.cardImage}
+                    height="318"
+                /> */}
                 <CardContent className={classes.cardContent}>
                     <Typography variant="body2" component="p" className={classes.contentText}>
                         {post.content}

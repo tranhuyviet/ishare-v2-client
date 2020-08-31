@@ -37,6 +37,8 @@ import CommentLikeList from '../shared/CommentLikeList';
 import MyLink from '../shared/MyLink';
 import DeleteButton from '../shared/DeleteButton';
 
+import { Image } from 'cloudinary-react';
+
 const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageClose }) => {
     const classes = useStyles();
     const [commentListOpen, setCommentListOpen] = useState(false);
@@ -125,7 +127,18 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
                     container
                     justify="center"
                 >
-                    <img src={post.images[imageIndex]} alt="post img" className={classes.images} />
+                    {/* <img src={post.images[imageIndex]} alt="post img" className={classes.images} /> */}
+                    <img
+                        src={process.env.REACT_APP_CLOUDINARY_LINK + post.images[imageIndex]}
+                        className={classes.images}
+                        alt="post img"
+                    />
+                    {/* <Image
+                        cloudName={process.env.REACT_APP_CLOUDINARY_NAME}
+                        publicId={post.images[imageIndex]}
+                        //className={classes.cardImage}
+                        height="600"
+                    /> */}
 
                     {post.images && post.images.length > 1 ? (
                         <>
@@ -191,7 +204,11 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
                                     className={classes.comment}
                                     action={
                                         comment.user.id.toString() === user.id.toString() ? (
-                                            <DeleteButton postId={post.id} commentId={comment.id} />
+                                            <DeleteButton
+                                                postId={post.id}
+                                                commentId={comment.id}
+                                                deleteType="comment"
+                                            />
                                         ) : null
                                     }
                                 />

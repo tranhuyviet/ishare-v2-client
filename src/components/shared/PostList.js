@@ -20,29 +20,35 @@ import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 
 const PostList = () => {
     const classes = useStyles();
-    const [page, setPage] = useState(1);
-    const [dataPosts, setDataPosts] = useState([]);
+    // const [page, setPage] = useState(1);
+    // const [dataPosts, setDataPosts] = useState([]);
 
-    const { data, refetch, updateQuery, client, loading } = useQuery(GET_POSTS_QUERY, {
-        variables: {
-            page: page,
-        },
-        fetchPolicy: 'cache-and-network',
+    const { data, loading } = useQuery(GET_POSTS_QUERY, {
         onError(err) {
             console.log(err);
         },
-        onCompleted(res) {
-            const newData = [...dataPosts, ...res.getPosts];
-
-            setDataPosts(newData);
-            client.writeQuery({
-                query: GET_POSTS_QUERY,
-                variables: { page: page },
-                data: { getPosts: newData },
-            });
-            return newData;
-        },
     });
+
+    // const { data, refetch, updateQuery, client, loading } = useQuery(GET_POSTS_QUERY, {
+    //     variables: {
+    //         page: page,
+    //     },
+    //     fetchPolicy: 'cache-and-network',
+    //     onError(err) {
+    //         console.log(err);
+    //     },
+    //     onCompleted(res) {
+    //         const newData = [...dataPosts, ...res.getPosts];
+
+    //         setDataPosts(newData);
+    //         client.writeQuery({
+    //             query: GET_POSTS_QUERY,
+    //             variables: { page: page },
+    //             data: { getPosts: newData },
+    //         });
+    //         return newData;
+    //     },
+    // });
 
     console.log('data', data);
     return (
@@ -76,18 +82,18 @@ const PostList = () => {
                         </Grid>
                     ))}
             </Grid>
-            <Grid container justify="center">
+            {/* <Grid container justify="center">
                 <Tooltip title="View more..." style={{ textAlign: 'center' }}>
                     <IconButton
                         onClick={() => {
                             setPage((page) => page + 1);
-                            // refetch();
+                            
                         }}
                     >
                         <ArrowDropDownCircleIcon style={{ fontSize: 40 }} />
                     </IconButton>
                 </Tooltip>
-            </Grid>
+            </Grid> */}
         </Paper>
     );
 };

@@ -226,6 +226,7 @@ const LoginForm = ({ handleAuthPageClose }) => {
 const LOGIN = gql`
     mutation login($email: String!, $password: String!, $recaptcha: String!) {
         login(email: $email, password: $password, recaptcha: $recaptcha) {
+            id
             name
             email
             avatarId
@@ -240,6 +241,7 @@ const LOGIN = gql`
 const LOGIN_FACEBOOK = gql`
     mutation loginFacebook($facebookId: String!, $accessToken: String!) {
         loginFacebook(facebookId: $facebookId, accessToken: $accessToken) {
+            id
             name
             email
             avatarUrl
@@ -253,6 +255,7 @@ const LOGIN_FACEBOOK = gql`
 const LOGIN_GOOGLE = gql`
     mutation loginGoogle($googleId: String!, $idToken: String!) {
         loginGoogle(googleId: $googleId, idToken: $idToken) {
+            id
             name
             email
             avatarUrl

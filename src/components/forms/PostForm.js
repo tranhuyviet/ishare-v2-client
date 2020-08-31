@@ -65,6 +65,7 @@ const PostForm = ({ handlePostPageClose }) => {
                     res = await axios.post(process.env.REACT_APP_CLOUDINARY_URL, data, {
                         cancelToken: signal.token,
                     });
+                    console.log('IMAGE RES', res);
                 } catch (error) {
                     setIsLoading(false);
                     setAlertOpen(true);
@@ -73,7 +74,7 @@ const PostForm = ({ handlePostPageClose }) => {
                 if (!res) {
                     throw new Error('Upload images went wrong');
                 }
-                values.images.push(res.data.secure_url);
+                values.images.push(res.data.public_id);
                 setValues(values);
                 i++;
                 console.log('VALUE', values, i, files.length);
@@ -127,14 +128,14 @@ const PostForm = ({ handlePostPageClose }) => {
                 // console.log('RESULT', result);
                 const data = proxy.readQuery({
                     query: GET_POSTS_QUERY,
-                    variables: { page: 1 },
+                    // variables: { page: 1 },
                 });
                 console.log('DATA GET', data);
                 // data.getPosts = [result.data.createPost, ...data.getPosts];
                 // console.log('DATA UPDATE', data);
                 proxy.writeQuery({
                     query: GET_POSTS_QUERY,
-                    variables: { page: 1 },
+                    // variables: { page: 1 },
                     data: { getPosts: [result.data.createPost, ...data.getPosts] },
                 });
                 setIsLoading(false);

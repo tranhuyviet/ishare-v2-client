@@ -30,5 +30,7 @@ export const StyledMenuItem = withStyles((theme) => ({
         //         color: theme.palette.common.white,
         //     },
         // },
+        padding: 2,
+        width: 52,
     },
 }))(MenuItem);

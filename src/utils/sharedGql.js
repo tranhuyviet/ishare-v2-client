@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const GET_POSTS_QUERY = gql`
-    query getPosts($page: Int!) {
-        getPosts(page: $page) {
+    {
+        getPosts {
             id
             content
             images
