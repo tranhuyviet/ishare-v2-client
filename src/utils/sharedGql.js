@@ -38,6 +38,36 @@ export const GET_POSTS_QUERY = gql`
     }
 `;
 
+export const GET_POSTS_BY_USER_QUERY = gql`
+    query getPostsByUser($userId: ID!) {
+        getPostsByUser(userId: $userId) {
+            id
+            # content
+            # images
+            # user {
+            #     name
+            #     avatarUrl
+            # }
+            # createdAt
+            # comments {
+            #     comment
+            #     createdAt
+            #     user {
+            #         name
+            #         avatarUrl
+            #     }
+            # }
+            # likes {
+            #     createdAt
+            #     user {
+            #         name
+            #         avatarUrl
+            #     }
+            # }
+        }
+    }
+`;
+
 export const GET_POSTS_QUERY_FROM_CATCH = gql`
     {
         getPosts {

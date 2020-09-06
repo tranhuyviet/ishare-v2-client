@@ -15,10 +15,14 @@ import Spinner from '../shared/Spinner';
 import Alert from '../shared/Alert';
 import { GET_POSTS_QUERY } from '../../utils/sharedGql';
 import { UIContext } from '../../context/uiContext';
+import _ from 'lodash';
+import { AuthContext } from '../../context/authContext';
+// import { postCount } from '../../utils/postCount';
 
 const PostForm = ({ handlePostPageClose }) => {
     const classes = useStyles();
     const { setTabValue } = useContext(UIContext);
+    // const { user } = useContext(AuthContext);
     const [files, setFiles] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -118,7 +122,6 @@ const PostForm = ({ handlePostPageClose }) => {
         }
     }
 
-    console.log('POST FORM RENDER');
     const [createPost, { loading }] = useMutation(CREATE_POST_MUTATION, {
         variables: values,
         onError(error) {
@@ -133,7 +136,7 @@ const PostForm = ({ handlePostPageClose }) => {
                     query: GET_POSTS_QUERY,
                     variables: { type: 'NEWEST' },
                 });
-                console.log('DATA GET', data);
+                // console.log('DATA GET', data);
                 // data.getPosts = [result.data.createPost, ...data.getPosts];
                 // console.log('DATA UPDATE', data);
                 proxy.writeQuery({
@@ -141,6 +144,12 @@ const PostForm = ({ handlePostPageClose }) => {
                     variables: { type: 'NEWEST' },
                     data: { getPosts: [result.data.createPost, ...data.getPosts] },
                 });
+                // const count = proxy.readQuery({
+                //     query: GET_POSTS_QUERY,
+                //     variables: { type: 'NEWEST' },
+                // });
+
+                // setPostCount(postCount(count.getPosts, user.id));
                 setIsLoading(false);
                 handlePostPageClose();
             } catch (error) {

@@ -8,12 +8,26 @@ import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import CommentIcon from '@material-ui/icons/Comment';
 import { AuthContext } from '../../context/authContext';
+import { UIContext } from '../../context/uiContext';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_POSTS_BY_USER_QUERY } from '../../utils/sharedGql';
 
 const Banner = () => {
     const classes = useStyles();
     const theme = useTheme();
     const isXS = useMediaQuery(theme.breakpoints.down('xs'));
     const { user } = useContext(AuthContext);
+    const { postCount } = useContext(UIContext);
+
+    // const { data } = useQuery(GET_POSTS_BY_USER_QUERY, {
+    //     variables: { userId: user.id },
+    //     onError(err) {
+    //         console.log(err);
+    //     },
+    // });
+
+    // console.log('DATA GET BY USER ID', data);
 
     return (
         <>
@@ -57,7 +71,14 @@ const Banner = () => {
                                     <CardActionArea className={classes.infoGroup}>
                                         <AddAPhotoIcon className={classes.icon} />
                                         <Typography variant="subtitle1">
-                                            <span className={classes.number}>132</span> posts
+                                            {postCount && (
+                                                <>
+                                                    <span className={classes.number}>
+                                                        {postCount}
+                                                    </span>
+                                                    <span> posts</span>
+                                                </>
+                                            )}
                                         </Typography>
                                     </CardActionArea>
                                 </Grid>

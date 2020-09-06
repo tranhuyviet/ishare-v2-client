@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
     Grid,
     Paper,
@@ -18,10 +18,13 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { UIContext } from '../../context/uiContext';
+import { AuthContext } from '../../context/authContext';
+import { postCount } from '../../utils/postCount';
 
 const PostList = () => {
     const classes = useStyles();
-    const { tabValue } = useContext(UIContext);
+    const { tabValue, setPostCount } = useContext(UIContext);
+    const { user } = useContext(AuthContext);
     // const [page, setPage] = useState(1);
     // const [dataPosts, setDataPosts] = useState([]);
 
@@ -35,7 +38,17 @@ const PostList = () => {
         onError(err) {
             console.log(err);
         },
+        onCompleted(res) {
+            console.log('RES', res);
+            if (user) setPostCount(postCount(res.getPosts, user.id));
+        },
     });
+
+    useEffect(() => {
+        if (data) {
+            if (user) setPostCount(postCount(data.getPosts, user.id));
+        }
+    }, [data]);
 
     // const { data, refetch, updateQuery, client, loading } = useQuery(GET_POSTS_QUERY, {
     //     variables: {
