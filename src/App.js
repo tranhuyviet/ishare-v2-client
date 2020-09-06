@@ -8,6 +8,7 @@ import { UIContextProvider } from './context/uiContext';
 
 import NavBar from './components/Header/NavBar';
 import HomePage from './components/pages/HomePage';
+import Footer from './components/Footer/Footer';
 
 function App() {
     const theme = createMuiTheme({
@@ -36,6 +37,7 @@ function App() {
                         <Switch>
                             <Route exact path="/" component={HomePage} />
                         </Switch>
+                        <Footer />
                     </BrowserRouter>
                 </ThemeProvider>
             </AuthProvider>
