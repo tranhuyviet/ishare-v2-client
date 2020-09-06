@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
@@ -13,10 +13,15 @@ import {
 } from '@material-ui/core';
 import MyButton from './MyButton';
 import { GET_POSTS_QUERY } from '../../utils/sharedGql';
+import { UIContext } from '../../context/uiContext';
 
 const DeleteButton = ({ postId, commentId, callback, tooltipPlace, deleteType }) => {
     const [confirmOpen, setConfirmOpen] = useState(false);
-
+    const { tabValue } = useContext(UIContext);
+    let type = 'NEWEST';
+    if (tabValue === 1) type = 'TOPCOMMENTS';
+    else if (tabValue === 2) type = 'TOPLIKES';
+    else type = 'NEWEST';
     console.log(postId, deleteType);
     let mutation;
     switch (deleteType) {
@@ -50,11 +55,13 @@ const DeleteButton = ({ postId, commentId, callback, tooltipPlace, deleteType })
                 console.log('DELETE POST', postId);
                 const data = proxy.readQuery({
                     query: GET_POSTS_QUERY,
+                    variables: { type },
                 });
                 console.log('data', data);
 
                 proxy.writeQuery({
                     query: GET_POSTS_QUERY,
+                    variables: { type },
                     data: {
                         getPosts: data.getPosts.filter((post) => post.id !== postId),
                     },

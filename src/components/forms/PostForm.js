@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useStyles } from './PostForm.style';
 import { TextField, CircularProgress, Grid, Snackbar } from '@material-ui/core';
 import axios from 'axios';
@@ -14,9 +14,11 @@ import { createPostSchema } from '../../schemas/postSchema';
 import Spinner from '../shared/Spinner';
 import Alert from '../shared/Alert';
 import { GET_POSTS_QUERY } from '../../utils/sharedGql';
+import { UIContext } from '../../context/uiContext';
 
 const PostForm = ({ handlePostPageClose }) => {
     const classes = useStyles();
+    const { setTabValue } = useContext(UIContext);
     const [files, setFiles] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -84,6 +86,7 @@ const PostForm = ({ handlePostPageClose }) => {
                 }
             });
             console.log('continue');
+            setTabValue(0);
             // let images = [];
             // files.forEach((file, index) => {
             //     const data = new FormData();
@@ -128,14 +131,14 @@ const PostForm = ({ handlePostPageClose }) => {
                 // console.log('RESULT', result);
                 const data = proxy.readQuery({
                     query: GET_POSTS_QUERY,
-                    // variables: { page: 1 },
+                    variables: { type: 'NEWEST' },
                 });
                 console.log('DATA GET', data);
                 // data.getPosts = [result.data.createPost, ...data.getPosts];
                 // console.log('DATA UPDATE', data);
                 proxy.writeQuery({
                     query: GET_POSTS_QUERY,
-                    // variables: { page: 1 },
+                    variables: { type: 'NEWEST' },
                     data: { getPosts: [result.data.createPost, ...data.getPosts] },
                 });
                 setIsLoading(false);

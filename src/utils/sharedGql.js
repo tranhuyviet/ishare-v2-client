@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const GET_POSTS_QUERY = gql`
-    {
-        getPosts {
+    query getPosts($type: String!) {
+        getPosts(type: $type) {
             id
             content
             images

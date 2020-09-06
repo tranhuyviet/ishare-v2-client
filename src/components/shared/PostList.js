@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     Grid,
     Paper,
@@ -17,13 +17,21 @@ import { GET_POSTS_QUERY } from '../../utils/sharedGql';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
+import { UIContext } from '../../context/uiContext';
 
 const PostList = () => {
     const classes = useStyles();
+    const { tabValue } = useContext(UIContext);
     // const [page, setPage] = useState(1);
     // const [dataPosts, setDataPosts] = useState([]);
 
+    let type = 'NEWEST';
+    if (tabValue === 1) type = 'TOPCOMMENTS';
+    else if (tabValue === 2) type = 'TOPLIKES';
+    else type = 'NEWEST';
+
     const { data, loading } = useQuery(GET_POSTS_QUERY, {
+        variables: { type },
         onError(err) {
             console.log(err);
         },
@@ -53,7 +61,7 @@ const PostList = () => {
     console.log('data', data);
     return (
         <Paper elevation={0} square style={{ paddingBottom: 16 }}>
-            <Grid container justify="space-between" className={classes.container}>
+            <Grid container justify="flex-start" className={classes.container}>
                 {/* {dataPosts &&
                     dataPosts.map((post) => (
                         <Grid
