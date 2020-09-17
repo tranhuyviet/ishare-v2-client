@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { IconButton } from '@material-ui/core';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
@@ -9,7 +9,7 @@ const LikeButton = ({ post: { id, isLiked }, user }) => {
     const [likePost] = useMutation(LIKE_POST_MUTATION, {
         variables: { postId: id },
         update(proxy, result) {
-            console.log('RESULT', result);
+            // console.log('RESULT', result);
         },
     });
 

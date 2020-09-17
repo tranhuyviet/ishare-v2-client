@@ -6,6 +6,7 @@ export const useStyles = makeStyles((theme) => ({
         padding: 0,
         paddingTop: theme.spacing(3),
         // paddingBottom: theme.spacing(3),
+        minHeight: 'calc(100vh - 53px)',
         [theme.breakpoints.down('sm')]: {
             justifyContent: 'center!important',
         },

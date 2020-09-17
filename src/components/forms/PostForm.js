@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useStyles } from './PostForm.style';
-import { TextField, CircularProgress, Grid, Snackbar } from '@material-ui/core';
+import { TextField, Grid, Snackbar } from '@material-ui/core';
 import axios from 'axios';
 
 import { useFormik } from 'formik';
@@ -15,8 +15,8 @@ import Spinner from '../shared/Spinner';
 import Alert from '../shared/Alert';
 import { GET_POSTS_QUERY } from '../../utils/sharedGql';
 import { UIContext } from '../../context/uiContext';
-import _ from 'lodash';
-import { AuthContext } from '../../context/authContext';
+// import _ from 'lodash';
+// import { AuthContext } from '../../context/authContext';
 // import { postCount } from '../../utils/postCount';
 
 const PostForm = ({ handlePostPageClose }) => {
@@ -53,14 +53,14 @@ const PostForm = ({ handlePostPageClose }) => {
     });
 
     function onSubmit() {
-        console.log('Submit');
+        // console.log('Submit');
         if (!files || files.length === 0) {
             setErrorMessage('You have to upload at least one image');
             return;
         }
         try {
             setIsLoading(true);
-            console.log('FILE', files);
+            // console.log('FILE', files);
             let i = 0;
             files.forEach(async (file) => {
                 const data = new FormData();
@@ -71,7 +71,7 @@ const PostForm = ({ handlePostPageClose }) => {
                     res = await axios.post(process.env.REACT_APP_CLOUDINARY_URL, data, {
                         cancelToken: signal.token,
                     });
-                    console.log('IMAGE RES', res);
+                    // console.log('IMAGE RES', res);
                 } catch (error) {
                     setIsLoading(false);
                     setAlertOpen(true);
@@ -83,13 +83,13 @@ const PostForm = ({ handlePostPageClose }) => {
                 values.images.push(res.data.public_id);
                 setValues(values);
                 i++;
-                console.log('VALUE', values, i, files.length);
+                // console.log('VALUE', values, i, files.length);
                 if (i === files.length) {
-                    console.log('CREATE POST');
+                    // console.log('CREATE POST');
                     createPost();
                 }
             });
-            console.log('continue');
+
             setTabValue(0);
             // let images = [];
             // files.forEach((file, index) => {
@@ -122,7 +122,7 @@ const PostForm = ({ handlePostPageClose }) => {
         }
     }
 
-    const [createPost, { loading }] = useMutation(CREATE_POST_MUTATION, {
+    const [createPost] = useMutation(CREATE_POST_MUTATION, {
         variables: values,
         onError(error) {
             console.log('CREATE POST ERROR', error);

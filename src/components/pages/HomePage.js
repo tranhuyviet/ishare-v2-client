@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Banner from '../Header/Banner';
 import TabBar from '../Header/TabBar';
 import PostList from '../shared/PostList';

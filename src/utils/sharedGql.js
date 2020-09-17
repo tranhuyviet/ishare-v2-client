@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const GET_POSTS_QUERY = gql`
-    query getPosts($type: String!) {
-        getPosts(type: $type) {
+    query getPosts($type: String!, $userId: ID) {
+        getPosts(type: $type, userId: $userId) {
             id
             content
             images
@@ -42,28 +42,31 @@ export const GET_POSTS_BY_USER_QUERY = gql`
     query getPostsByUser($userId: ID!) {
         getPostsByUser(userId: $userId) {
             id
-            # content
-            # images
-            # user {
-            #     name
-            #     avatarUrl
-            # }
-            # createdAt
-            # comments {
-            #     comment
-            #     createdAt
-            #     user {
-            #         name
-            #         avatarUrl
-            #     }
-            # }
-            # likes {
-            #     createdAt
-            #     user {
-            #         name
-            #         avatarUrl
-            #     }
-            # }
+            content
+            images
+            user {
+                name
+                avatarUrl
+            }
+            createdAt
+            comments {
+                comment
+                createdAt
+                user {
+                    name
+                    avatarUrl
+                }
+            }
+            likes {
+                createdAt
+                user {
+                    name
+                    avatarUrl
+                }
+            }
+            likeCount
+            commentCount
+            isLiked
         }
     }
 `;

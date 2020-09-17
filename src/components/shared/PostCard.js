@@ -9,27 +9,23 @@ import {
     CardActionArea,
     Typography,
     IconButton,
-    ListItemIcon,
-    ListItemText,
-    Divider,
-    Grid,
-    Link,
-    Tooltip,
+    // Tooltip,
 } from '@material-ui/core';
 import { StyledMenu, StyledMenuItem } from '../shared/StyledMenu';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import CommentIcon from '@material-ui/icons/Comment';
+// import EditIcon from '@material-ui/icons/Edit';
+// import DeleteIcon from '@material-ui/icons/Delete';
+// import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+// import CommentIcon from '@material-ui/icons/Comment';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
-import CollectionsOutlinedIcon from '@material-ui/icons/CollectionsOutlined';
+// import CollectionsOutlinedIcon from '@material-ui/icons/CollectionsOutlined';
 import CollectionsIcon from '@material-ui/icons/Collections';
 
 import moment from 'moment';
 import { useStyles } from './PostCard.style';
 import { AuthContext } from '../../context/authContext';
+import { UIContext } from '../../context/uiContext';
 
 import PostDetailPage from '../pages/PostDetailPage';
 import LikeButton from '../shared/LikeButton';
@@ -37,11 +33,12 @@ import CommentLikeList from '../shared/CommentLikeList';
 import MyLink from '../shared/MyLink';
 import DeleteButton from '../shared/DeleteButton';
 
-import { Image } from 'cloudinary-react';
+// import { Image } from 'cloudinary-react';
 
 const PostCard = ({ post }) => {
     const classes = useStyles();
     const { user } = useContext(AuthContext);
+    const { setPostsOfUserId } = useContext(UIContext);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [postDetailPageOpen, setPostDetailPageOpen] = useState(false);
@@ -85,7 +82,7 @@ const PostCard = ({ post }) => {
                                 open={Boolean(anchorEl)}
                                 onClose={handleMenuClose}
                             >
-                                <StyledMenuItem
+                                {/* <StyledMenuItem
                                     onClick={() => {
                                         handleMenuClose();
                                     }}
@@ -95,7 +92,7 @@ const PostCard = ({ post }) => {
                                             <EditIcon />
                                         </IconButton>
                                     </Tooltip>
-                                </StyledMenuItem>
+                                </StyledMenuItem> */}
                                 {/* <Divider /> */}
                                 <StyledMenuItem
                                     onClick={() => {
@@ -116,7 +113,20 @@ const PostCard = ({ post }) => {
                         </>
                     ) : null
                 }
-                title={<span style={{ fontWeight: 'bold' }}>{post.user.name}</span>}
+                title={
+                    <span
+                        // style={{ fontWeight: 'bold', cursor: 'pointer' }}
+                        className={classes.title}
+                        onClick={() => {
+                            console.log(post.user.id);
+                            setPostsOfUserId(post.user.id);
+                            user.name = post.user.name;
+                            user.avatarUrl = post.user.avatarUrl;
+                        }}
+                    >
+                        {post.user.name}
+                    </span>
+                }
                 subheader={moment(post.createdAt * 1).fromNow(true)}
                 className={classes.cardHeader}
             />

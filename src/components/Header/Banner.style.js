@@ -74,8 +74,9 @@ export const useStyles = makeStyles((theme) => ({
     },
     infoGroup: {
         display: 'flex',
-        flexDirection: 'column',
+        // flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: 'center',
         cursor: 'pointer',
         transition: 'all 0.3s ease',
         '&:hover': {
@@ -84,9 +85,11 @@ export const useStyles = makeStyles((theme) => ({
     },
     icon: {
         fontSize: '28px',
-        marginBottom: 5,
+        // marginBottom: 5,
+        marginRight: 8,
+
         [theme.breakpoints.down('xs')]: {
-            fontSize: '20px',
+            fontSize: '24px',
         },
     },
     number: {

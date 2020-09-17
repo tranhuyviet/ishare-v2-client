@@ -48,7 +48,7 @@ const SignupForm = ({ handleAuthPageClose }) => {
 
     const [signup, { loading }] = useMutation(SIGNUP, {
         update(proxy, result) {
-            console.log('RESULT', result);
+            // console.log('RESULT', result);
             authContext.login(result.data.signup);
             handleAuthPageClose();
         },

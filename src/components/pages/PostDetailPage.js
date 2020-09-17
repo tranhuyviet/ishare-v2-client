@@ -1,34 +1,31 @@
 import React, { useState } from 'react';
 import {
     Dialog,
-    DialogTitle,
     IconButton,
     Grid,
-    Backdrop,
     CardHeader,
     Avatar,
     Paper,
     Button,
     Typography,
     CircularProgress,
-    Tooltip,
 } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import CommentIcon from '@material-ui/icons/Comment';
+// import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+// import CommentIcon from '@material-ui/icons/Comment';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
-import Spinner from '../shared/Spinner';
+// import Spinner from '../shared/Spinner';
 
 import moment from 'moment';
 
 import { useStyles } from './PostDetailPage.style';
 
 import gql from 'graphql-tag';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import { useFormik } from 'formik';
 import { commentSchema } from '../../schemas/commentSchema';
 
@@ -37,7 +34,7 @@ import CommentLikeList from '../shared/CommentLikeList';
 import MyLink from '../shared/MyLink';
 import DeleteButton from '../shared/DeleteButton';
 
-import { Image } from 'cloudinary-react';
+// import { Image } from 'cloudinary-react';
 
 const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageClose }) => {
     const classes = useStyles();
@@ -55,8 +52,7 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
         handleChange,
         handleSubmit,
         handleBlur,
-        errors,
-        setErrors,
+
         isValid,
         setValues,
         // touched,
@@ -74,13 +70,13 @@ const PostDetailPage = ({ post, user, postDetailPageOpen, handlePostDetailPageCl
             console.log(error);
         },
         update(proxy, result) {
-            console.log('RESULT', result);
+            // console.log('RESULT', result);
             setValues(initialValues);
         },
     });
 
     function onSubmit(values) {
-        console.log('submit', values);
+        // console.log('submit', values);
         createComment();
     }
 

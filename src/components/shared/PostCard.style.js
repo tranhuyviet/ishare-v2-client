@@ -12,6 +12,13 @@ export const useStyles = makeStyles((theme) => ({
         padding: 8,
         width: '100%',
     },
+    title: {
+        fontWeight: 'bold',
+        cursor: 'pointer',
+        '&:hover': {
+            color: theme.palette.primary.main,
+        },
+    },
     cardActionArea: {
         position: 'relative',
         '&:hover': {

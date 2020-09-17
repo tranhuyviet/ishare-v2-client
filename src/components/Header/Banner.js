@@ -1,24 +1,25 @@
 import React, { useContext } from 'react';
 import { useStyles } from './Banner.style';
-import { Grid, Avatar, Typography, Paper, CardActionArea, useMediaQuery } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
-import MyButton from '../shared/MyButton';
+import { Grid, Avatar, Typography, Paper, CardActionArea } from '@material-ui/core';
+// import { useTheme } from '@material-ui/core/styles';
+// import MyButton from '../shared/MyButton';
 
-import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import CommentIcon from '@material-ui/icons/Comment';
+// import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import CameraAltOutlinedIcon from '@material-ui/icons/CameraAltOutlined';
+// import FavoriteIcon from '@material-ui/icons/Favorite';
+// import CommentIcon from '@material-ui/icons/Comment';
 import { AuthContext } from '../../context/authContext';
 import { UIContext } from '../../context/uiContext';
-import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
-import { GET_POSTS_BY_USER_QUERY } from '../../utils/sharedGql';
+// import gql from 'graphql-tag';
+// import { useQuery } from '@apollo/react-hooks';
+// import { GET_POSTS_BY_USER_QUERY } from '../../utils/sharedGql';
 
 const Banner = () => {
     const classes = useStyles();
-    const theme = useTheme();
-    const isXS = useMediaQuery(theme.breakpoints.down('xs'));
+    // const theme = useTheme();
+    // const isXS = useMediaQuery(theme.breakpoints.down('xs'));
     const { user } = useContext(AuthContext);
-    const { postCount } = useContext(UIContext);
+    const { postCount, setPostsOfUserId } = useContext(UIContext);
 
     // const { data } = useQuery(GET_POSTS_BY_USER_QUERY, {
     //     variables: { userId: user.id },
@@ -34,7 +35,7 @@ const Banner = () => {
             {user && user.token && (
                 <Paper className={classes.banner} elevation={0} square>
                     <Grid container className={classes.container}>
-                        <Grid item xs={12} sm={4} className={classes.avatarContainer}>
+                        <Grid item xs={12} sm={5} className={classes.avatarContainer}>
                             <Avatar
                                 src={user.avatarUrl}
                                 alt="user avatar"
@@ -44,7 +45,7 @@ const Banner = () => {
                         <Grid
                             item
                             xs={12}
-                            sm={8}
+                            sm={7}
                             container
                             spacing={2}
                             className={classes.rightContainer}
@@ -56,10 +57,10 @@ const Banner = () => {
                                 <Typography variant="h5" className={classes.name}>
                                     {user.name}
                                 </Typography>
-                                <MyButton
+                                {/* <MyButton
                                     title="Profile"
                                     style={{ display: isXS ? 'none' : 'inherit' }}
-                                />
+                                /> */}
                             </Grid>
                             <Grid
                                 item
@@ -68,21 +69,23 @@ const Banner = () => {
                                 className={classes.infosContainer}
                             >
                                 <Grid item className={classes.infoContainer}>
-                                    <CardActionArea className={classes.infoGroup}>
-                                        <AddAPhotoIcon className={classes.icon} />
+                                    <CardActionArea
+                                        className={classes.infoGroup}
+                                        onClick={() => {
+                                            setPostsOfUserId(user.id);
+                                            // console.log('posts click');
+                                        }}
+                                    >
+                                        <CameraAltOutlinedIcon className={classes.icon} />
                                         <Typography variant="subtitle1">
-                                            {postCount && (
-                                                <>
-                                                    <span className={classes.number}>
-                                                        {postCount}
-                                                    </span>
-                                                    <span> posts</span>
-                                                </>
-                                            )}
+                                            <span className={classes.number}>
+                                                {postCount ? postCount : 0}
+                                            </span>
+                                            <span>{postCount > 1 ? ' posts' : ' post'} </span>
                                         </Typography>
                                     </CardActionArea>
                                 </Grid>
-                                <Grid item className={classes.infoContainer}>
+                                {/* <Grid item className={classes.infoContainer}>
                                     <CardActionArea className={classes.infoGroup}>
                                         <CommentIcon className={classes.icon} />
                                         <Typography variant="subtitle1">
@@ -97,7 +100,7 @@ const Banner = () => {
                                             <span className={classes.number}>99</span> likes
                                         </Typography>
                                     </CardActionArea>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </Grid>
                     </Grid>
