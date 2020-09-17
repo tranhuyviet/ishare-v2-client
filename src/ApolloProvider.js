@@ -7,8 +7,8 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { setContext } from 'apollo-link-context';
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:5000/graphql',
-    // uri: 'https://merng-server-graphql.herokuapp.com/',
+    // uri: 'http://localhost:5000/graphql',
+    uri: 'https://ishare-v2-server.herokuapp.com/graphql',
 });
 
 const authLink = setContext(() => {
