@@ -1,4 +1,4 @@
-# iShare version 2 project: https://ishare-v2.netlify.app/
+# iShare version 2 project: https://ishare-v2.netlify.app/ (frontend)
 The main idea of the application is for people to share their own photos. Users will be able to post their own photos with caption, view/like other’s photos, comment.
 
 # Features:
@@ -11,7 +11,7 @@ The main idea of the application is for people to share their own photos. Users 
 # Technologies:
 Reactjs, Apollo Client, Graphql, Cloudinary React, Formik, JWT, React Dropzone, React Google/Facebook Login, React Google Recaptcha, Yup
 
-# Backend: 
+# Backend: (https://github.com/tranhuyviet/ishare-v2-server)
 
 # Images:
 ![login](https://res.cloudinary.com/dzaxf70c4/image/upload/v1634711773/Screenshot_2021-10-20_at_9.32.07_cxzhl7.png)
