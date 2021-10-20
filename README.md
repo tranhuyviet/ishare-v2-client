@@ -16,5 +16,5 @@ Reactjs, Apollo Client, Graphql, Cloudinary React, Formik, JWT, React Dropzone, 
 # Images:
 ![login](https://res.cloudinary.com/dzaxf70c4/image/upload/v1634711773/Screenshot_2021-10-20_at_9.32.07_cxzhl7.png)
 
-![post](https://res.cloudinary.com/dzaxf70c4/image/upload/v1634711773/Screenshot_2021-10-20_at_9.33.07_ebn1y7.png)
+![post](https://res.cloudinary.com/dzaxf70c4/image/upload/v1634712170/Screenshot_2021-10-20_at_9.42.27_rvpi3c.png)
 
